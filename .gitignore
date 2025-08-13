@@ -1,0 +1,5 @@
+__pycache__
+docs/build
+docs/source/license_mole.*.rst
+.mole.web_cache
+.mypy_cache

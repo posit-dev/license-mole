@@ -1,0 +1,35 @@
+[flake8]
+exclude = .git,__pycache__
+indent_size = 3
+max-line-length = 120
+doctests = True
+require-plugins =
+  flake8-docstrings
+  flake8-import-order
+  pep8-naming
+  flake8-rst-docstrings
+  pydoclint
+convention = sphinx
+style = sphinx
+arg-type-hints-in-docstring = False
+arg-type-hints-in-signature = True
+require-return-section-when-returning-nothing = False
+only-attrs-with-ClassVar-are-treated-as-class-attrs = True
+select =
+  D212,
+  D417,
+  DOC,
+  RST,
+ignore =
+  I,
+  DOC203,
+  DOC503,
+  DOC601,
+  DOC603,
+  RST213,
+rst-roles =
+  py:class,
+  py:func,
+  py:ref,
+  py:attr,
+  py:meth

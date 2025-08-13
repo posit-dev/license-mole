@@ -1,0 +1,52 @@
+exclude = [
+  '.git',
+  '__pycache__',
+]
+indent-width = 3
+line-length = 128
+output-format = "concise"
+preview = true
+
+[lint]
+select = [
+  "ANN",
+  "ARG",
+  "B",
+  "C4",
+  "COM812",
+  "CPY",
+  "D",
+  "E",
+  "F",
+  "G",
+  "I",
+  "N",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "Q",
+  "RUF",
+  "TC",
+  "W",
+]
+ignore=[
+  "D105",
+  "D107",
+  "E111",
+  "E114",
+  "E741",
+  "PLR6301",
+  "PLW2901",
+  "RUF100",
+]
+pydocstyle.convention = "numpy"
+flake8-quotes.inline-quotes = "single"
+flake8-annotations.suppress-dummy-args = true
+flake8-annotations.suppress-none-returning = true
+
+
+[format]
+quote-style = "single"
+indent-style = "space"
+

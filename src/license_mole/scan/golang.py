@@ -13,9 +13,10 @@ from functools import cached_property
 from typing import Any, Optional
 
 from .. import repo
-from . import BaseScanner, NoLicenseError
+from ..errors import HomepageMissingError, NoLicenseError
+from ..pathselector import PathSelector
+from . import BaseScanner
 from .package import BasePackage
-from .pathselector import PathSelector
 
 VERSION_PATTERN = re.compile(r'/v\d+$')
 CASE_ESCAPE = re.compile(r'!([a-z])')
@@ -141,7 +142,7 @@ class GoPackage(BasePackage):
 
       url = repo.clean_repo_url('/'.join(self.repo.split('/')[:3]))
       if not url:
-         raise repo.HomepageMissingError(self.module)
+         raise HomepageMissingError(self.module)
 
       return url
 

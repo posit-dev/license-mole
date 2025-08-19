@@ -14,9 +14,10 @@ from os.path import join as path_join
 from typing import Any, Optional, Union
 
 from .. import cache, logger, repo
-from . import BaseScanner, MissingPackageError, NoLicenseError
+from ..errors import MissingPackageError, NoLicenseError
+from ..pathselector import PathSelector
+from . import BaseScanner
 from .package import BasePackage
-from .pathselector import PathSelector
 
 
 def _get_node_modules_path(path: str, package: Optional[str] = None) -> str:

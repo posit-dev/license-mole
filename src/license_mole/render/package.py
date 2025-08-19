@@ -8,9 +8,10 @@ import re
 import zlib
 from typing import Any, Optional, Union, cast
 
-from .. import logger, repo
+from .. import logger
 from ..config import RELABEL
 from ..config_format import FormatDict, UnderlineDescriptor
+from ..errors import HomepageMissingError
 from ..licenses import normalize_ltype_for_comparison
 from ..markdown import md_link
 from ..scan.package import BasePackage
@@ -267,7 +268,7 @@ class RenderPackage:
          self.permit_license_change = source.permit_license_change
          try:
             self.url = source.url
-         except repo.HomepageMissingError as e:
+         except HomepageMissingError as e:
             self.url = f'({e})'
          licenses = {}
          for ltype in source.licenses:

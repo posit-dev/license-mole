@@ -72,10 +72,10 @@ import hashlib
 import re
 from typing import Any, Optional
 
+from ..pathselector import NULLPATH, PathSelector
 from ..repo import find_file_in_repo
 from . import BaseScanner
 from .package import BasePackage
-from .pathselector import NULLPATH, PathSelector
 
 CMAKE_CLEAN_RE = re.compile(r'\s+|#([^"]*"[^"]*")*[^"]*$')
 

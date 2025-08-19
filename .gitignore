@@ -1,5 +1,9 @@
 __pycache__
-docs/build
+docs/.doctrees
+docs/html
+docs/source/license_mole.rst
 docs/source/license_mole.*.rst
 .mole.web_cache
 .mypy_cache
+.ruff_cache
+dist

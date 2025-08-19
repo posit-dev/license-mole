@@ -9,7 +9,7 @@ from typing import Any, ItemsView, Optional, Self, cast
 from ..config import get_overrides
 from ..licenses import find_license_files, licenses
 from ..licenses.collection import LicenseCollection
-from .pathselector import PathSelector
+from ..pathselector import PathSelector
 
 
 def _optional_extend(info: dict[str, Any], key: str) -> dict[str, Any]:

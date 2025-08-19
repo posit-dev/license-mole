@@ -7,7 +7,8 @@ Copyright (c) 2025 Posit Software, PBC
 from functools import cached_property
 from typing import Any, Iterator, Optional, Union, cast
 
-from . import LicenseConflictError, licenses, normalize_ltype_for_comparison, resources
+from ..errors import LicenseConflictError
+from . import licenses, normalize_ltype_for_comparison
 from .parse import LicenseInfo, analyze_license_file, get_readme_attribution, normalize_license_code
 
 

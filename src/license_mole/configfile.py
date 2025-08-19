@@ -5,9 +5,8 @@ Copyright (c) 2025 Posit Software, PBC
 """
 
 import os
+import tomllib
 from typing import Any, KeysView, Optional
-
-import tomllib as toml
 
 
 # TODO: come up with a way to define a schema
@@ -21,7 +20,7 @@ class ConfigFile:
          self._config = data
       elif path is not None:
          with open(path, 'rb') as f:
-            self._config = toml.load(f)
+            self._config = tomllib.load(f)
 
    def __bool__(self) -> bool:
       return bool(self._path)

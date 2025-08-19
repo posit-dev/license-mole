@@ -31,17 +31,6 @@ URL_REPLACEMENTS = {
 }
 
 
-class HomepageMissingError(RuntimeError):
-   """Error raised when a package's homepage cannot be resolved.
-
-   :param key: package identifier
-   """
-
-   def __init__(self, key: str):
-      super().__init__('Could not find homepage for package')
-      self.key = key
-
-
 @cache
 def clean_repo_url(url: str) -> str:
    """Resolve a repository URL string to a proper, working HTTP(S) URL.

@@ -24,7 +24,7 @@ from . import config_format as cf
 from .config_format import FORMATS as _FORMATS
 from .config_format import OUTPUTS as _OUTPUTS
 from .configfile import ConfigFile
-from .scan.pathselector import REPO_PATHS, PathSelector
+from .pathselector import REPO_PATHS, PathSelector
 
 
 class OverrideDict(TypedDict, total=False):
@@ -239,7 +239,7 @@ def load_config(path: str):
    config = ConfigFile(os.path.abspath(path))
    root = config.relative_path(config.value('root', '.'))
 
-   _populate_repos(root, config.required_group('repos'))
+   _populate_repos(root, config.group('repos'))
    _populate_groups(config.required_group('groups'))
    _populate_collections(config.group('collections'))
    _populate_overrides(config.group('overrides'))

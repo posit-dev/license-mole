@@ -1,0 +1,35 @@
+[build-system]
+requires = ["poetry >= 2.0.0, < 3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "license-mole"
+version = "0.0.1"
+requires-python = ">= 3.12"
+repository = "https://github.com/posit-dev/license-mole"
+readme = "README.md"
+documentation = "https://github.com/posit-dev/license-mole/docs"
+description = "Multi-language Open-source License Excavator"
+dependencies = ["requests (>=2.32.5,<3.0.0)"]
+
+[tool.poetry]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Topic :: Software Development :: Documentation",
+]
+
+[tool.poetry.scripts]
+mole = "license_mole.__main__:main"
+
+[tool.poetry.group]
+dev.optional = true
+docs.optional = true
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.3.0"
+ruff = "^0.12.9"
+mypy = "^1.17.1"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^8.2.3"
+sphinx-markdown-builder = "^0.6.8"

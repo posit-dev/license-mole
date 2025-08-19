@@ -12,6 +12,7 @@ import os
 from typing import Optional
 
 from ..cache import download_file_cached
+from ..errors import LicenseConflictError
 from ..repo import find_file_in_repo
 from . import resources
 from .parse import LicenseInfo, normalize_license_code
@@ -32,23 +33,6 @@ CGIT_LICENSE_PATHS = [
    '/COPYING',
    '/LICENSE',
 ]
-
-
-class LicenseConflictError(RuntimeError):
-   """Error raised when a license file disagrees with existing information.
-
-   :param ltype: Identifier of known license
-   :param source: Package and file where known license was found
-   :param new_ltype: Identifier of newly-found license
-   :param new_source: Package and file containing newly-found license
-   """
-
-   def __init__(self, ltype: str, source: tuple[str, str], new_ltype: str, new_source: tuple[str, str]):
-      super().__init__('Conflicting license types')
-      self.ltype = ltype
-      self.source = source
-      self.new_ltype = new_ltype
-      self.new_source = new_source
 
 
 def find_license_files(path: str) -> list[str]:

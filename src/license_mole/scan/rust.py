@@ -8,19 +8,19 @@ import glob
 import hashlib
 import os
 import subprocess
+import tomllib
 from functools import cached_property
 from typing import Any, Optional, cast
 
-import tomllib
-
 from .. import logger, repo
 from ..config import RUST_VENDOR, get_overrides
+from ..errors import HomepageMissingError, NoLicenseError
 from ..licenses import find_license_files
 from ..licenses.parse import analyze_license_file
-from . import BaseScanner, NoLicenseError
+from ..pathselector import PathSelector
+from . import BaseScanner
 from .manual import ManualPackage
 from .package import BasePackage
-from .pathselector import PathSelector
 
 # If the auto-detection is worried about combining packages and you want to
 # combine them, name them here and identify which package is representative.
@@ -226,7 +226,7 @@ class RustPackage(BasePackage):
    def url(self) -> str:
       """The URL to a "homepage" for the package."""
       if not self.repo:
-         raise repo.HomepageMissingError(self.name)
+         raise HomepageMissingError(self.name)
       return self.repo
 
    def merge(self, other: 'RustPackage'):

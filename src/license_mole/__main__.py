@@ -40,11 +40,11 @@ import os
 import sys
 from typing import TYPE_CHECKING, Optional
 
-from . import __version__, logger, repo, scan
+from . import __version__, errors, logger, scan
 from .cache import license_cache
 from .config import COLLECTIONS, GROUPS, OUTPUTS, load_config
 from .render import NoticeRenderer, RenderGroup
-from .scan import get_scanners, rust
+from .scan import rust
 
 if TYPE_CHECKING:
    from .scan.package import BasePackage
@@ -86,7 +86,7 @@ class LicenseMoleApplication:
       :return: An error code (0 for success)
       """
       clean = True
-      for type_name, scanner_class in get_scanners().items():
+      for type_name, scanner_class in scan.get_scanners().items():
          if not scanner_class:
             continue
          if not scan.check_cache(scanner_class, GROUPS[type_name]):
@@ -104,10 +104,10 @@ class LicenseMoleApplication:
       groups: dict[str, dict[str, BasePackage]] = {}
       all_packages: list[BasePackage] = []
 
-      for type_name, scanner_class in get_scanners().items():
+      for type_name, scanner_class in scan.get_scanners().items():
          if not scanner_class:
             continue
-         group_set = scan.scan_groups(scanner_class, GROUPS[type_name], self.args.force_scan)
+         group_set = scan.scan_groups(scanner_class, GROUPS.get(type_name, {}), self.args.force_scan)
          for group_name, contents in group_set.items():
             group_packages = groups.get(group_name, {})
             group_packages.update(contents)
@@ -141,25 +141,25 @@ class LicenseMoleApplication:
             license_cache.set(k, v.to_dict())
          license_cache.save()
          return 0
-      except scan.NoLicenseError as e:
+      except errors.NoLicenseError as e:
          logger.error('No license information found for %s', e.key)
          logger.error('If necessary, add data to scripts/collect_utils/override.py')
-      except scan.LicenseConflictError as e:
+      except errors.LicenseConflictError as e:
          logger.error('Conflicting license types detected:')
          logger.error('\tPrevious: %s (from %s in %s)', e.ltype, e.source[0], e.source[1])
          logger.error('\tNew:      %s (from %s in %s)', e.new_ltype, e.new_source[0], e.new_source[1])
          logger.error('Determine which license is correct and add it to scripts/collect_utils/override.py')
-      except scan.LicenseValidationError:
+      except errors.LicenseValidationError:
          logger.error('Consider adding missing information in scripts/collect_utils/override.py')
-      except scan.UnidentifiedLicenseError as e:
+      except errors.UnidentifiedLicenseError as e:
          logger.error('Could not identify license file %s for %s', e.path, e.key)
          logger.error('Specify the license codes for this package in scripts/collect_utils/override.py')
-      except scan.MissingPackageError as e:
+      except errors.MissingPackageError as e:
          msg_lines = str(e).split('\n')
          for line in msg_lines:
             logger.error(line)
          logger.info('You may need to install this package.')
-      except repo.HomepageMissingError as e:
+      except errors.HomepageMissingError as e:
          logger.error('Could not find homepage for package %s', e.key)
          logger.error('Add a repository pattern to scripts/collect_utils/repo.py')
          logger.error('or add an override to scripts/collect_utils/override.py')
@@ -261,10 +261,18 @@ class LicenseMoleApplication:
       return self.render_outputs()
 
 
-if __name__ == '__main__':
+def main() -> int:
+   """Entry point for license-mole.
+
+   :return: Status code (0 for success)
+   """
    logging.basicConfig(
       level=logging.DEBUG if os.environ.get('DEBUG') else logging.INFO,
       format='[%(levelname)s] %(message)s',
    )
    app = LicenseMoleApplication()
-   sys.exit(app.main())
+   return app.main()
+
+
+if __name__ == '__main__':
+   sys.exit(main())

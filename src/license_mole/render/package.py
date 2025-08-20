@@ -388,7 +388,8 @@ class RenderPackage:
       :return: An anchor attribute
       """
       anchor = self.render_name
-      attr_key = ','.join(str(x) for x in sorted(self.licenses.items()))
+      attr_key = ','.join(str(x) for x in sorted(list(self.licenses.keys()) + self.attribution))
+      attr_key += '::' + self.version
       attr_key = hex(zlib.crc32(attr_key.encode()))[2:]
       anchor = anchor + '-' + attr_key
       anchor = re.sub(r'[^A-Za-z0-9]', '-', anchor)
@@ -471,7 +472,11 @@ class RenderPackage:
 
       license_text = []
       templates = ['nameless_license', 'named_license', 'multi_license']
+      license_blocks = []
       for path, ltypes in by_path.items():
+         license_blocks.append((sorted(ltypes), path))
+      license_blocks.sort()
+      for ltypes, path in license_blocks:
          license_names = sorted(rl.LICENSE_NAMES[ltype] for ltype in ltypes if ltype in rl.LICENSE_NAMES)
          license_text.append(
             populate_template(

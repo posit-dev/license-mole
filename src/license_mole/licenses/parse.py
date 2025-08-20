@@ -107,6 +107,7 @@ LICENSE_IDENTIFIERS = {
    'CC0 1.0 Universal': 'CC0-1.0',
    'Creative Commons Zero': 'CC0-1.0',
    'Boost Software License': 'BSL-1.0',
+   'Elastic License 2.0': 'Elastic-2.0',
    'Jean-loup Gailly and Mark Adler': 'zlib',
    'either version 2.1 of the License': 'LGPL-2.1-or-later',
    'LLVM Exceptions to the Apache 2.0 License': 'Apache-2.0-WITH-LLVM-Exceptions',
@@ -186,7 +187,7 @@ def normalize_license_code(ltype: str) -> tuple[str, ...]:
          return info['spdx']
       if info['guess']:
          return (info['guess'],)
-      return (ltype,)
+      return ()
 
    ltype = (ltype
       .replace('(', '')

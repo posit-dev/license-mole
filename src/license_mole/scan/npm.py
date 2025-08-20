@@ -9,7 +9,7 @@ import hashlib
 import json
 import subprocess
 from functools import cached_property
-from os.path import basename, dirname, exists
+from os.path import basename, dirname, exists, isdir
 from os.path import join as path_join
 from typing import Any, Optional, Union
 
@@ -132,7 +132,9 @@ class NpmPackage(BasePackage):
    package_type = 'NPM'
 
    def __init__(self, path: PathSelector):
-      pkg_json = path.to_absolute('package.json')
+      pkg_json = path.to_absolute()
+      if isdir(pkg_json):
+         pkg_json = path.to_absolute('package.json')
       try:
          with open(pkg_json, 'r', encoding='utf8') as f:
             pkg = json.load(f)

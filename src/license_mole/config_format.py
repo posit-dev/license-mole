@@ -168,6 +168,7 @@ _default_markdown_format = FormatDict({
    'toc_line': '- %(name)s (%(licenses)s)',
    'shared_license': """
 ### %(name)s
+
 %(text)s
 """,
    'package': """
@@ -185,14 +186,17 @@ _default_markdown_format = FormatDict({
    'multi_license_indent': '  - ',
    'nameless_license': """
 **License text:**
+
 %(text)s
 """,
    'named_license': """
 **%(name)s text:**
+
 %(text)s
 """,
    'multi_license': """
 **License text (%(names)s):**
+
 %(text)s
 """,
    'license_indent': '',

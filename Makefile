@@ -1,7 +1,7 @@
 deps:
 	poetry install
 
-build:
+dist:
 	poetry install -q
 	poetry build
 

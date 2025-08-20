@@ -6,14 +6,9 @@ dist:
 	poetry build
 
 .git/hooks/%: hooks/run-hook
-	@rm -f .git/hooks/%
-	@ln -s ../../hooks/run-hook .git/hooks/%
-	@chmod u+x .git/hooks/%
-
-.git/hooks/commit-msg: hooks/run-hook
-	@rm -f .git/hooks/commit-msg
-	@ln -s ../../hooks/run-hook .git/hooks/commit-msg
-	@chmod u+x .git/hooks/commit-msg
+	@rm -f $@
+	@ln -s ../../hooks/run-hook $@
+	@chmod u+x $@
 
 install-hooks: .git/hooks/commit-msg .git/hooks/pre-commit
 

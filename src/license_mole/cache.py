@@ -33,7 +33,7 @@ def set_web_cache_root(path: str):
    os.makedirs(_WEB_CACHE, exist_ok=True)
 
 
-def download_file_cached(url: str, verbatim: bool = False) -> str:
+def download_file_cached(url: str, verbatim: bool = False, headers: Optional[dict[str, str]] = None) -> str:
    """Download a text file from a URL or from a cache on disk.
 
    The file is assumed to be in UTF-8, and this function will raise an
@@ -54,6 +54,7 @@ def download_file_cached(url: str, verbatim: bool = False) -> str:
 
    :param url: The URL to the file to be downloaded
    :param verbatim: If True, override the usual special-case handling
+   :param headers: If set, adds headers to the HTTP request
    :raises ValueError: if the URL is not acceptable or the downloaded file
       is not UTF-8
    :return: The content of the requested file
@@ -78,7 +79,7 @@ def download_file_cached(url: str, verbatim: bool = False) -> str:
       with open(cache_file, 'r', encoding='utf8') as f:
          return f.read()
    logger.debug('Downloading %s to %s...', url, cs)
-   response = requests.get(url, timeout=15.0, allow_redirects=True)
+   response = requests.get(url, timeout=15.0, allow_redirects=True, headers=headers)
    if response.status_code == requests.codes['ok']:
       if '/+/' in url:
          text = standard_b64decode(response.content).decode()

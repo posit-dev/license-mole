@@ -1,0 +1,48 @@
+{
+ "Python": {
+  "mole": {
+   "!checksums": {
+    "poetry.lock": "35ac2f46d1625aa5141fa958fd678b50310a9846838153f2af3ddf288635aa31"
+   },
+   "py::requests==2.32.5": {
+    "name": "requests",
+    "path": "https://github.com/psf/requests",
+    "version": "2.32.5",
+    "author": "Kenneth Reitz",
+    "licenses": [
+     "Apache-2.0"
+    ]
+   },
+   "py::charset_normalizer==3.4.3": {
+    "name": "charset_normalizer",
+    "path": "https://github.com/jawah/charset_normalizer",
+    "version": "3.4.3",
+    "licenses": [
+     "MIT"
+    ]
+   },
+   "py::idna==3.10": {
+    "name": "idna",
+    "path": "https://github.com/kjd/idna",
+    "version": "3.10"
+   },
+   "py::urllib3==2.5.0": {
+    "name": "urllib3",
+    "path": "https://github.com/urllib3/urllib3",
+    "version": "2.5.0"
+   },
+   "py::certifi==2025.8.3": {
+    "name": "certifi",
+    "path": "https://github.com/certifi/python-certifi",
+    "version": "2025.8.3",
+    "author": "Kenneth Reitz",
+    "licenses": [
+     "MPL-2.0"
+    ]
+   },
+   "!root": [
+    "."
+   ]
+  }
+ }
+}

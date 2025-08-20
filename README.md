@@ -1,8 +1,6 @@
 # Multi-language Open-source License Excavator
 ### or: the `license-mole` that digs up your dependencies
 
-Copyright &copy; 2025 Posit Software, PBC
-
 ## Installation
 
 Clone this repository and simply run `make` or `poetry install`.
@@ -43,3 +41,9 @@ To generate the documentation files:
 * `make docs-markdown`: Generate the Markdown documentation found in `docs/`
 * `make docs-html`: Generate HTML documentation into `docs/html/`
 * `make docs`: Generate both Markdown and HTML documentation
+
+## License
+
+Copyright &copy; 2025 Posit Software, PBC
+
+Mole wouldn't be successful on its own. See its [open-source dependencies](docs/NOTICE.md).

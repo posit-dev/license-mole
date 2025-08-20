@@ -1,0 +1,12 @@
+[output.notice]
+template = "docs/source/NOTICE.template"
+destination = "NOTICE"
+format = "text"
+
+[output.markdown]
+template = "docs/source/NOTICE.md.template"
+destination = "docs/NOTICE.md"
+format = "markdown"
+
+[groups.python]
+mole = "."

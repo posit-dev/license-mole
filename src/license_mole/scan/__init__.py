@@ -432,9 +432,10 @@ def get_scanners() -> dict[str, type[BaseScanner]]:
    :return: The scanner dictionary
    """
    if not SCANNERS:
-      from . import golang, manual, npm, rust  # noqa: PLC0415
+      from . import golang, manual, npm, python, rust  # noqa: PLC0415
       SCANNERS['npm'] = npm.NpmScanner
       SCANNERS['go'] = golang.GoScanner
       SCANNERS['rust'] = rust.RustScanner
+      SCANNERS['python'] = python.PythonScanner
       SCANNERS['manual'] = manual.ManualScanner
    return SCANNERS

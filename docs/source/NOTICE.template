@@ -1,0 +1,10 @@
+Open-Source Dependencies
+========================
+
+Even Mole needs some help to get its work done!
+
+Mole makes use of the following open-source Python modules:
+
+%(mole)s
+
+%(component-licenses)s

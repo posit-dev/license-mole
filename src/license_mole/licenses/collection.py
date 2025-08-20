@@ -179,11 +179,6 @@ class LicenseCollection:
       info = analyze_license_file(path, self.author)
       self.files[path] = info
       linked = False
-      # if len(info['spdx']) == 1:
-      #    ltype = normalize_ltype_for_comparison(info['spdx'][0])
-      #    if resources.is_safe_license_text(ltype, []):
-      #       self.link_file(ltype, resources.get_standard_license_reference(ltype))
-      #       linked = True
       if info['spdx']:
          for ltype in info['spdx']:
             self.add(ltype)

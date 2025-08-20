@@ -209,8 +209,9 @@ def _populate_collections(collections: ConfigFile):
    """
    if not collections:
       # If no collections are defined, imply them from the group definitions
-      for group_name in GROUPS:
-         COLLECTIONS[group_name] = [group_name]
+      for group in GROUPS.values():
+         for key in group.keys():
+            COLLECTIONS[key] = [key]
    else:
       for name in collections.keys():
          group_list = collections.value(name)

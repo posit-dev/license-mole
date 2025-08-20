@@ -80,6 +80,7 @@ class FormatDict(TypedDict, total=False):
    Accepted placeholders:
 
       * ``%(name)s``: The name of the package.
+      * ``%(url)s``: The URL where the package can be found.
       * ``%(attribution)s``: The copyright attribution messages. Each
          message is formatted using :py:attr:`attribution-line`.
       * ``%(message)s``: "Distributed under" messages for each license.
@@ -125,6 +126,8 @@ _default_text_format = FormatDict({
    'package': """
 %(name)s
 %(underline)s
+Website: %(url)s
+
 %(attribution)s
 %(messages)s
 %(license)s""",
@@ -168,13 +171,13 @@ _default_markdown_format = FormatDict({
 %(text)s
 """,
    'package': """
-### %(name)s
+### [%(name)s](%(url)s)
 %(attribution)s
 %(messages)s
 %(license)s""",
    'attribution_line': '- %(message)s',
    'message_line': '- %(message)s',
-   'license_line': 'Distributed under the %(name)s',
+   'license_line': '- Distributed under the %(name)s',
    'multi_license_lines': """
 - Distributed under multiple software licenses, including:
 %(licenses)s

@@ -121,11 +121,12 @@ class NoticeRenderer(LicenseContext):
                if new_vgrp:
                   self.packages[vgrp.name] = new_vgrp
 
-      for ltype, usage in sorted(self.license_usage.items()):
-         clean_path = license_registry.get_file_for_type(ltype)
-         if len(usage) <= 1 or not clean_path:
-            continue
-         self.shared_licenses[ltype] = clean_path
+      if 'shared-licenses' in self._used_sections:
+         for ltype, usage in sorted(self.license_usage.items()):
+            clean_path = license_registry.get_file_for_type(ltype)
+            if len(usage) <= 1 or not clean_path:
+               continue
+            self.shared_licenses[ltype] = clean_path
 
    def _collect_excluded(self, groups: dict[str, VersionGroup]) -> set[str]:
       """Collect packages to be excluded from the rendered output.

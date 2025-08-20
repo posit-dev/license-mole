@@ -135,6 +135,8 @@ class NpmPackage(BasePackage):
       pkg_json = path.to_absolute()
       if isdir(pkg_json):
          pkg_json = path.to_absolute('package.json')
+      else:
+         path = path.to_selector(dirname(pkg_json))
       try:
          with open(pkg_json, 'r', encoding='utf8') as f:
             pkg = json.load(f)

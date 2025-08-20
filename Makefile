@@ -22,4 +22,13 @@ docs-markdown: docs-apidoc
 docs-html: docs-apidoc
 	poetry run sphinx-build -b html -d docs/.doctrees docs/source docs/html
 
-.PHONY: build docs docs-apidoc docs-markdown docs-html
+dev-deps:
+	poetry install -q --with dev
+
+changelog: dev-deps
+	poetry run semantic-release --strict version
+
+publish: changelog
+	poetry run semantic-release --strict publish
+
+.PHONY: dist dev doc-deps docs docs-apidoc docs-markdown docs-html dev-deps changelog

@@ -352,7 +352,7 @@ class RenderPackage:
             attr_map[key] = attr
             continue
          # uncertain, debug
-         logger.warning('Uncertain date range comparison (%s vs %s), please debug', old_years, new_years)
+         logger.warning('Uncertain date range comparison in %s (%s vs %s), please debug', self.key, old_years, new_years)
          attr_map[attr] = attr
       self.attribution = sorted(set(attr_map.values()))
 
@@ -407,7 +407,7 @@ class RenderPackage:
       else:
          package_type = ''
       ltypes = sorted(normalize_ltype(l) for l in self.licenses.keys() if l != 'MULTI')
-      licenses = ', '.join(rl.LICENSE_SHORT_NAMES[normalize_ltype(l)] for l in ltypes)
+      licenses = ', '.join(rl.LICENSE_SHORT_NAMES.get(normalize_ltype(l), l) for l in ltypes)
       if len(ltypes) > 1:
          licenses += ' licenses'
       elif len(ltypes) == 1:

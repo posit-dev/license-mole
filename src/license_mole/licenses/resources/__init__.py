@@ -15,6 +15,7 @@ WELL_KNOWN = [
    'LGPL-3.0',
    'LGPL-2.1',
    'AGPL-3.0',
+   'ELASTIC-2.0',
 ]
 
 _ANCHOR = sys.modules[__name__]

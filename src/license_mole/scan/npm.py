@@ -119,6 +119,20 @@ def _collect_authors(pkg: dict[str, Any]) -> str:
    return author
 
 
+def _get_nls_display_name(path: str) -> str:
+   """Check for a package.nls.json file and get the displayName from it.
+
+   :param path: Absolute path to package.nls.json
+   :return: The displayName, or an empty string if not found
+   """
+   try:
+      with open(path, 'rb') as f:
+         data = json.load(f)
+      return data.get('displayName', '')
+   except FileNotFoundError:
+      return ''
+
+
 class NpmPackage(BasePackage):
    """A description of an npm package.
 
@@ -147,7 +161,7 @@ class NpmPackage(BasePackage):
 
       display_name = pkg.get('display_name', '')
       if not display_name or display_name == '%display_name%':
-         display_name = self.pkg_name
+         display_name = _get_nls_display_name(path.to_absolute('package.nls.json')) or self.pkg_name
 
       super().__init__(
          name=display_name,

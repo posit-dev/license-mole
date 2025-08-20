@@ -11,7 +11,7 @@ from typing import Any, Callable, Iterator, NamedTuple, Optional
 from .. import logger
 from ..cache import scan_cache
 from ..errors import LicenseConflictError, LicenseValidationError, UnidentifiedLicenseError
-from ..licenses import licenses, scan_repo_for_license
+from ..licenses import licenses, resources, scan_repo_for_license
 from ..pathselector import PathSelector
 from .package import BasePackage
 
@@ -212,6 +212,8 @@ def _run_pass(pass_index: int, pkgs: list[BasePackage], pass_fn: Callable[[BaseP
    :return: Packages with unresolved licensing
    """
    next_pass = [pkg for pkg in pkgs if not pkg.ignored]
+   if not next_pass:
+      return []
    licenses_linked = -1
    pass_count = 0
    while licenses_linked != 0:
@@ -224,7 +226,7 @@ def _run_pass(pass_index: int, pkgs: list[BasePackage], pass_fn: Callable[[BaseP
          else:
             next_pass.append(dep)
       pass_count += 1
-      if licenses_linked > 0:
+      if licenses_linked > 0 or pass_count == 1:
          logger.info(
             'Pass %d.%d: identified licenses for %d/%d packages',
             pass_index,
@@ -317,8 +319,11 @@ def _third_pass(dep: BasePackage) -> bool:
    """Third analysis pass.
 
    This pass takes the following steps:
+
    * Heuristically links a file containing multiple licenses to identifiers
+
    * Tries to download missing license files from source code repository
+
    * Attaches a "clean" license file (if known) for unlinked identifiers
 
    :param dep: Package to analyze
@@ -341,6 +346,9 @@ def _third_pass(dep: BasePackage) -> bool:
       path = licenses.get_file_for_type(ltype)
       if not path:
          path = scan_repo_for_license(dep.url)
+      if not path:
+         if resources.is_safe_license_text(ltype, dep.licenses.attribution):
+            path = resources.get_standard_license_reference(ltype)
       if not path:
          # Maybe a later pass will find it
          # If not, the validation step will show an error
@@ -365,6 +373,36 @@ def _third_pass(dep: BasePackage) -> bool:
    return sum(dep.licenses.count_unlinked()) == 0
 
 
+def _fourth_pass(dep: BasePackage) -> bool:
+   """Fourth analysis pass.
+
+   This pass takes a single step:
+
+   * If the license type and attribution are known, check for standard license texts.
+
+   :param dep: Package to analyze
+   :raises LicenseConflictError: if the content of a license file doesn't match the spdx identifier
+   :return: Whether the package's licensing is fully resolved
+   """
+   num_ltypes, num_files = dep.licenses.count_unlinked()
+
+   if num_ltypes == 1 and num_files == 0:
+      ltype = dep.licenses.unlinked_ltypes[0]
+      if resources.is_safe_license_text(ltype, dep.licenses.attribution):
+         path = resources.get_standard_license_reference(ltype)
+         info = dep.licenses.add_file(path)
+         if not dep.licenses.auto_link_files():
+            raise LicenseConflictError(
+               ltype,
+               (dep.key, dep.path.to_absolute()),
+               '/'.join(info['spdx']) if info['spdx'] else info['guess'] or '(none)',
+               (dep.key, path),
+            )
+         return True
+
+   return sum(dep.licenses.count_unlinked()) == 0
+
+
 def detect_licenses(pkgs: list[BasePackage]) -> list[BasePackage]:
    """Run analysis passes to detect licensing information for packages.
 
@@ -378,7 +416,10 @@ def detect_licenses(pkgs: list[BasePackage]) -> list[BasePackage]:
    next_pass = _run_pass(2, next_pass, _second_pass)
 
    # Third pass: fill in missing license text from Github or from a "clean" copy of the license
-   return _run_pass(3, next_pass, _third_pass)
+   next_pass = _run_pass(3, next_pass, _third_pass)
+
+   # Fourth pass: look for standard licenses
+   return _run_pass(4, next_pass, _fourth_pass)
 
 
 def validate_licenses(pkgs: list[BasePackage]):

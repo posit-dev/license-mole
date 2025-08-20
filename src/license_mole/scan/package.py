@@ -4,6 +4,7 @@
 Copyright (c) 2025 Posit Software, PBC
 """
 
+import os
 from typing import Any, ItemsView, Optional, Self, cast
 
 from ..config import get_overrides
@@ -63,7 +64,12 @@ class BasePackage:
       if scan and files is None and self.path:
          files = find_license_files(self.path.to_absolute())
       for fn in files or []:
-         info = self.licenses.add_file(path.to_selector(fn).to_absolute())
+         abspath = path.to_selector(fn).to_absolute()
+         if '://' not in abspath and path.repo and not os.path.exists(abspath):
+            # If the path is not a URL and the selector points to a non-root repo,
+            # try checking the root repo before giving up
+            abspath = PathSelector('', fn).to_absolute()
+         info = self.licenses.add_file(abspath)
          if info['spdx']:
             if len(info['spdx']) == 1:
                # Only register the file if it's unambiguous

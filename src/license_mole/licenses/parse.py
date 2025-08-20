@@ -104,9 +104,10 @@ LICENSE_IDENTIFIERS = {
    'GNU LESSER GENERAL PUBLIC LICENSE Version 2.1': 'LGPL-2.1',
    'Academic Free License version 2.1': 'AFL-2.1',
    'Creative Commons Attribution 4.0': 'CC-BY-4.0',
+   'CC0 1.0 Universal': 'CC0-1.0',
+   'Creative Commons Zero': 'CC0-1.0',
    'Boost Software License': 'BSL-1.0',
    'Jean-loup Gailly and Mark Adler': 'zlib',
-   'CC0 1.0 Universal': 'CC0-1.0',
    'either version 2.1 of the License': 'LGPL-2.1-or-later',
    'LLVM Exceptions to the Apache 2.0 License': 'Apache-2.0-WITH-LLVM-Exceptions',
    # BSD and MIT frequently don't include a title but have identifiable clauses
@@ -179,6 +180,14 @@ def normalize_license_code(ltype: str) -> tuple[str, ...]:
    :param ltype: Non-normalized license identifier
    :return: A tuple of license identifiers
    """
+   if '://' in ltype:
+      info = analyze_license_file(ltype, ignore_uncertain=True)
+      if info['spdx']:
+         return info['spdx']
+      if info['guess']:
+         return (info['guess'],)
+      return (ltype,)
+
    ltype = (ltype
       .replace('(', '')
       .replace(')', '')
@@ -306,7 +315,7 @@ def get_license_text(path: str) -> str:
    if '#' in path:
       path, anchor, end_anchor = [*path.split('#'), ''][:3]
 
-   if path.startswith('http'):
+   if path.startswith('http') and '://' in path:
       text = download_file_cached(path)
    elif '.jar:' in path:
       jarpath, filepath = path.split('.jar:')

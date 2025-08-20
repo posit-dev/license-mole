@@ -7,9 +7,10 @@ Copyright (c) 2025 Posit Software, PBC
 import glob
 import hashlib
 import json
+import os
 import subprocess
 from functools import cached_property
-from os.path import basename, dirname, exists, isdir
+from os.path import basename, dirname, exists
 from os.path import join as path_join
 from typing import Any, Optional, Union
 
@@ -132,11 +133,7 @@ class NpmPackage(BasePackage):
    package_type = 'NPM'
 
    def __init__(self, path: PathSelector):
-      pkg_json = path.to_absolute()
-      if isdir(pkg_json):
-         pkg_json = path.to_absolute('package.json')
-      else:
-         path = path.to_selector(dirname(pkg_json))
+      pkg_json = path.to_absolute('package.json')
       try:
          with open(pkg_json, 'r', encoding='utf8') as f:
             pkg = json.load(f)
@@ -148,8 +145,12 @@ class NpmPackage(BasePackage):
          if 'quarto' in path.path and self.pkg_name != 'quarto':
             self.pkg_name = f'$quarto/{self.pkg_name}'
 
+      display_name = pkg.get('display_name', '')
+      if not display_name or display_name == '%display_name%':
+         display_name = self.pkg_name
+
       super().__init__(
-         name=pkg.get('displayName', self.pkg_name),
+         name=display_name,
          path=path,
          version=pkg.get('version', ''),
          author=_collect_authors(pkg),
@@ -237,12 +238,16 @@ class NpmScanner(BaseScanner):
    def __init__(self, group: str):
       super().__init__(group)
       self._locks: list[str] = []
+      self._scanned: set[str] = set()
 
    def scan(self, path: PathSelector):
       """Entry point for scanning a package tree.
 
       :param path: The root of the package tree
       """
+      abspath = path.to_absolute()
+      if os.path.isfile(abspath):
+         path = path.to_selector(dirname(abspath))
       pkg = NpmPackage(path)
       self._scan_recursive(path, pkg)
       self._locks.append(_hash_lockfile(path.to_absolute()))
@@ -252,9 +257,10 @@ class NpmScanner(BaseScanner):
 
       This function operates recursively to collect transitive dependencies.
       If the node_modules directory cannot be found, it invokes `npm install`
-      to create it. This may not have the same behavior as a real build, so
-      please disregard any modified lockfiles. (It shouldn't need to do this
-      if run in a repo after a build has been completed.)
+      to create it, possibly with the `--ignore-scripts` flag set. This may
+      not have the same behavior as a real build, so please disregard any
+      modified lockfiles. (It shouldn't need to do this if run in a repo after
+      a build has been completed.)
 
       Dev dependencies are omitted under the assumption that we won't be
       redistributing their contents. Peer dependencies and optional
@@ -268,6 +274,11 @@ class NpmScanner(BaseScanner):
       :param pkg: A pre-parsed package object, if available
       :raises MissingPackageError: if a dependency cannot be resolved
       """
+      if path.to_absolute() in self._scanned:
+         # package has already been parsed, don't duplicate
+         return
+      self._scanned.add(path.to_absolute())
+
       if pkg.name and not pkg.package_json.get('private') and not pkg.ignored:
          # Don't output private/ignored packages but do check their dependencies
          self.packages[pkg.key] = pkg
@@ -281,11 +292,18 @@ class NpmScanner(BaseScanner):
       node_modules = _get_node_modules_path(abspath)
       if not node_modules:
          logger.info('node_modules not found, running npm install in %s', abspath)
-         subprocess.run(
-            ['npm', 'install', '--omit=dev'],
-            cwd=abspath,
-            check=True,
-         )
+         try:
+            subprocess.run(
+               ['npm', 'install', '--omit=dev'],
+               cwd=abspath,
+               check=True,
+            )
+         except subprocess.CalledProcessError:
+            subprocess.run(
+               ['npm', 'install', '--omit=dev', '--ignore-scripts'],
+               cwd=abspath,
+               check=True,
+            )
          node_modules = _get_node_modules_path(abspath)
 
       for ws in pkg.workspaces:

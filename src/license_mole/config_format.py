@@ -63,6 +63,7 @@ class FormatDict(TypedDict, total=False):
    Accepted placeholders:
 
       * ``%(name)s``: The name of the package.
+      * ``%(versions)s``: The version(s) of the package.
       * ``%(license)s``: A comma-separated list of short license names.
    """
    shared_license: str
@@ -80,6 +81,7 @@ class FormatDict(TypedDict, total=False):
    Accepted placeholders:
 
       * ``%(name)s``: The name of the package.
+      * ``%(versions)s``: The version(s) of the package.
       * ``%(url)s``: The URL where the package can be found.
       * ``%(attribution)s``: The copyright attribution messages. Each
          message is formatted using :py:attr:`attribution-line`.
@@ -118,13 +120,13 @@ class FormatDict(TypedDict, total=False):
 _default_text_format = FormatDict({
    'markup': 'text',
    'underline': UnderlineDescriptor({'char': '='}),
-   'toc_line': '* %(name)s (%(licenses)s)',
+   'toc_line': '* %(name)s%(versions)s (%(licenses)s)',
    'shared_license': """
 %(name)s
 %(underline)s
 %(text)s""",
    'package': """
-%(name)s
+%(name)s%(versions)s
 %(underline)s
 Website: %(url)s
 
@@ -165,14 +167,14 @@ License text (%(names)s):
 _default_markdown_format = FormatDict({
    'markup': 'markdown',
    'underline': UnderlineDescriptor({'char': '='}),
-   'toc_line': '- %(name)s (%(licenses)s)',
+   'toc_line': '- %(name)s%(versions)s (%(licenses)s)',
    'shared_license': """
 ### %(name)s
 
 %(text)s
 """,
    'package': """
-### [%(name)s](%(url)s)
+### [%(name)s](%(url)s)%(versions)s
 %(attribution)s
 %(messages)s
 %(license)s""",

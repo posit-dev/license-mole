@@ -20,7 +20,7 @@ from ..licenses.parse import analyze_license_file
 from ..pathselector import PathSelector
 from . import BaseScanner
 from .manual import ManualPackage
-from .package import BasePackage
+from .package import BasePackage, version_tuple
 
 # If the auto-detection is worried about combining packages and you want to
 # combine them, name them here and identify which package is representative.
@@ -101,7 +101,7 @@ class RustBasicPackage:
       else:
          self.author = pkg.get('author', '')
       self.version = pkg.get('version', '')
-      self.version_tuple = tuple(self.version.split('.'))
+      self.version_tuple = version_tuple(self.version)
       self.repo = repo.clean_repo_url(pkg.get('repository', ''))
       self.attribution: list[str] = []
 

@@ -17,7 +17,6 @@ from ..markdown import auto_hyperlink, strip_markdown
 from ..scan.package import BasePackage
 from .labels import LICENSE_NAMES
 from .package import LicenseContext, RenderPackage, populate_template
-from .package import attribution_comparison_key as attribution_comparison_key
 from .versiongroup import VersionGroup
 
 INTERP_PLACEHOLDER = re.compile(r'%\(([^)]+)\)s')
@@ -151,7 +150,7 @@ class NoticeRenderer(LicenseContext):
    def _render_long(self):
       """Collect long license descriptions for each package."""
       lines = []
-      packages = sorted(self.packages.values(), key=lambda g: g.name.replace('@', '').upper())
+      packages = sorted(self.packages.values(), key=lambda g: g.sort_key)
       for vgrp in packages:
          if vgrp.key in self.excluded or vgrp.name not in self._included:
             continue

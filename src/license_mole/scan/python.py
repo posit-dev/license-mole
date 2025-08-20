@@ -8,17 +8,15 @@ import hashlib
 import json
 import re
 import tomllib
-from typing import Any, Callable, NamedTuple, Optional, Union
+from typing import Any, Callable, NamedTuple, Optional
 
 from ..cache import download_file_cached
 from ..pathselector import PathSelector
 from . import BaseScanner
-from .package import BasePackage
+from .package import BasePackage, VersionKey, version_tuple
 
 ATOM_RE = re.compile(r'^([^ =<>!\[]+)\s*(\[[^\]]+\])?\s*((?:(?:<|<=|>|>=|==|!=)\s*[^<>=\s,]+\s*(?:,|$))*)')
 VERSION_RE = re.compile(r'(<|<=|>|>=|==|!=)\s*([^<>=\s]+)$')
-
-VersionKey = list[Union[str, int]]
 
 
 class _ParsedAtom(NamedTuple):
@@ -62,18 +60,8 @@ def _parse_atom(atom: str) -> _ParsedAtom:
    return _ParsedAtom(name, versions, extra, provides)
 
 
-def _parse_version(version: str) -> VersionKey:
-   parts: VersionKey = []
-   for part in version.split('.'):
-      try:
-         parts.append(int(part))
-      except ValueError:
-         parts.append(part)
-   return parts
-
-
 def _make_predicate(op: str, version: str, chain: Callable[[VersionKey], bool]) -> Callable[[VersionKey], bool]:
-   compare = _parse_version(version)
+   compare = version_tuple(version)
    if op == '!=':
       return lambda v: chain(v) and v != compare
    elif op == '>=':
@@ -97,7 +85,7 @@ def _select_version(versions: list[tuple[str, str]], available: Optional[list[st
          guess = version
       predicate = _make_predicate(op, version, predicate)
    for version in reversed(available or []):
-      if predicate(_parse_version(version)):
+      if predicate(version_tuple(version)):
          return version
    return guess
 

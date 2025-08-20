@@ -4,10 +4,11 @@
 Copyright (c) 2025 Posit Software, PBC
 """
 
-from typing import TYPE_CHECKING, Iterator, TypedDict
+from typing import TYPE_CHECKING, Iterator, Optional, TypedDict, Union
 
 from ..config_format import FormatDict
 from ..licenses.parse import analyze_license_file
+from ..scan.package import VersionKey, version_tuple
 from .package import RenderPackage, attribution_comparison_key
 
 if TYPE_CHECKING:
@@ -42,23 +43,16 @@ class VersionGroup:
    Versions are grouped based on matching licenses and attribution.
 
    :param packages: The packages contained within this group
+   :raises ValueError: if the package list is empty
    """
 
    def __init__(self, packages: list[RenderPackage]):
-      self.version_groups = [
-         packages[:1],
-      ]
-
-      if len(packages) > 1:
-         compare = _version_compare_keys(packages[0])
-         for pkg in packages[1:]:
-            if pkg in self:
-               continue
-            changed, new_compare = self._detect_license_change(pkg, compare)
-            if changed:
-               compare = new_compare
-               self.version_groups.append([])
-            self.version_groups[-1].append(pkg)
+      if not packages:
+         raise ValueError('Empty package list')
+      self.version_groups: list[list[RenderPackage]] = []
+      self._last_compare: Optional[VersionCompareKey] = None
+      for pkg in sorted(packages):
+         self._add_package(pkg)
 
    def __bool__(self) -> bool:
       """Return False if no packages are in the group."""
@@ -95,6 +89,32 @@ class VersionGroup:
       """Gets the homepage/repo URL for this group."""
       return self.representative.url
 
+   @property
+   def sort_key(self) -> list[Union[str, VersionKey]]:
+      """A key for sorting version groups.
+
+      This key will sort first in order of ascending package name, then in
+      order of descending most recent version.
+      """
+      key: list[Union[str, VersionKey]] = [self.name.replace('@', '').upper()]
+      for group in self.version_groups:
+         for pkg in group:
+            key.append(tuple(-p if isinstance(p, int) else p for p in version_tuple(pkg.version)))
+      return key
+
+   def _add_package(self, pkg: RenderPackage) -> None:
+      if not self.version_groups or not self._last_compare:
+         self._last_compare = _version_compare_keys(pkg)
+         self.version_groups.append([pkg])
+         return
+      if pkg in self:
+         return
+      changed, new_compare = self._detect_license_change(pkg, self._last_compare)
+      if changed:
+         self._last_compare = new_compare
+         self.version_groups.append([])
+      self.version_groups[-1].append(pkg)
+
    def _detect_license_change(
       self,
       pkg: RenderPackage,
@@ -128,7 +148,7 @@ class VersionGroup:
          return True, compare
       return False, compare
 
-   def clone(self, exclude: set[str]) -> 'VersionGroup':
+   def clone(self, exclude: set[str]) -> Optional['VersionGroup']:
       """Create a copy of this version group.
 
       :param exclude: A set of package keys to exclude from the copy
@@ -138,6 +158,8 @@ class VersionGroup:
       packages: list[RenderPackage] = []
       for group in self:
          packages.extend(pkg for pkg in group if pkg.key not in exclude)
+      if not packages:
+         return None
       return VersionGroup(packages)
 
    def _merge_one(self, vgrp: list[RenderPackage], other: list[RenderPackage], exclude: set[str]):
@@ -160,23 +182,16 @@ class VersionGroup:
       :param other: Another version group for the same package
       :param exclude: A set of package keys to ignore
       """
-      for other_vgrp in other:
-         other_compare = _version_compare_keys(other_vgrp[0])
-         matched = False
-         for vgrp in self:
-            compare = _version_compare_keys(vgrp[0])
-            # if self.key in ALLOW_LICENSE_DIFFERENCES or compare == other_compare:
-            if compare == other_compare:
-               self._merge_one(vgrp, other_vgrp, exclude)
-               matched = True
-               break
-         if not matched:
-            filtered: list[RenderPackage] = []
-            for pkg in other_vgrp:
-               if pkg.key not in exclude:
-                  filtered.append(pkg)
-            if filtered:
-               self.version_groups.append(filtered)
+      all_packages = []
+      for vgrp in self:
+         all_packages.extend(vgrp)
+      for vgrp in other:
+         all_packages.extend(p for p in vgrp if p.key not in exclude)
+      all_packages.sort()
+      self._last_compare = None
+      self.version_groups = []
+      for pkg in all_packages:
+         self._add_package(pkg)
 
    def render_summary(self, fmt: FormatDict) -> list[str]:
       """Render a Markdown summary of the packages in the group.

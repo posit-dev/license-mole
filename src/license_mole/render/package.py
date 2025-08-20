@@ -15,7 +15,7 @@ from ..errors import HomepageMissingError
 from ..licenses import normalize_ltype_for_comparison
 from ..licenses.parse import analyze_license_file
 from ..markdown import md_link
-from ..scan.package import BasePackage
+from ..scan.package import BasePackage, version_tuple
 from . import labels as rl
 from .context import LicenseContext
 
@@ -69,11 +69,6 @@ def _clean_attribution(attrs: list[str]) -> list[str]:
          attr = pattern.sub(rep, attr)
       result.append(attr.strip())
    return result
-
-
-def _version_tuple(version: str) -> tuple[int, ...]:
-   parts = re.sub(r'[^\d]+', '.', version).strip('.')
-   return tuple(int(p) for p in parts.split('.'))
 
 
 def attribution_comparison_key(attrs: list[str]) -> tuple[str, ...]:
@@ -143,7 +138,7 @@ def _format_versions(versions: list[str]) -> str:
    :return: The formatted version list
    """
    if len(versions) > 1:
-      versions = sorted(versions, key=_version_tuple, reverse=True)
+      versions = sorted(versions, key=version_tuple, reverse=True)
       return f' versions {", ".join(versions)}'
    if len(versions) == 1:
       return f' version {versions[0]}'
@@ -307,7 +302,7 @@ class RenderPackage:
       """
       key: list[Union[str, int]] = [self.combined or self.unversioned]
       if self.version:
-         key.extend(-p for p in _version_tuple(self.version))
+         key.extend(-p for p in version_tuple(self.version))
       return tuple(key)
 
    def merge(self, other: 'RenderPackage'):
@@ -321,6 +316,7 @@ class RenderPackage:
       if list(other.licenses.keys()) != list(self.licenses.keys()):
          # TODO: it would be nice if this could control directionality
          if self.permit_license_change or other.permit_license_change:
+            self.permit_license_change = True
             for ltype, path in other.licenses.items():
                if ltype not in self.licenses:
                   self.licenses[ltype] = path
@@ -441,6 +437,12 @@ class RenderPackage:
       :return: A block of Markdown text
       """
       by_path = _select_nonshared_license_files(self.licenses, context.shared_licenses)
+      nonshared = set()
+      license_blocks = []
+      for path, ltypes in by_path.items():
+         nonshared.update(ltypes)
+         license_blocks.append((sorted(ltypes), path))
+      license_blocks.sort()
 
       license_messages = ''
       if len(self.licenses) == 1:
@@ -450,17 +452,18 @@ class RenderPackage:
             if message:
                license_messages = fmt['message_line'] % {'message': message}
          elif ltype in rl.LICENSE_NAMES:
+            use_link = ltype not in nonshared and ltype in context.shared_licenses
             license_messages = fmt['license_line'] % {
                'name': md_link(
                   rl.LICENSE_NAMES[ltype],
-                  f'#{ltype}' if ltype in context.shared_licenses else '',
+                  f'#{ltype}' if use_link else '',
                ),
             }
       else:
          lines = []
-         for ltype, path in sorted(self.licenses.items()):
+         for ltype in sorted(self.licenses.keys()):
             ltype = normalize_ltype(ltype)
-            use_link = ltype in context.shared_licenses and path not in by_path
+            use_link = ltype not in nonshared and ltype in context.shared_licenses
             lines.append(md_link(
                rl.LICENSE_NAMES[ltype],
                ltype if use_link else '',
@@ -472,10 +475,6 @@ class RenderPackage:
 
       license_text = []
       templates = ['nameless_license', 'named_license', 'multi_license']
-      license_blocks = []
-      for path, ltypes in by_path.items():
-         license_blocks.append((sorted(ltypes), path))
-      license_blocks.sort()
       for ltypes, path in license_blocks:
          license_names = sorted(rl.LICENSE_NAMES[ltype] for ltype in ltypes if ltype in rl.LICENSE_NAMES)
          license_text.append(

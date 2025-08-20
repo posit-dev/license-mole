@@ -12,6 +12,44 @@ from ..licenses import find_license_files, licenses
 from ..licenses.collection import LicenseCollection
 from ..pathselector import PathSelector
 
+VersionKey = tuple[int, ...]
+
+
+def version_tuple(version: Optional[str]) -> VersionKey:
+   """Split a version into a tuple suitable for sorting.
+
+   :param version: The package's version string
+   :return: A tuple of version components
+   """
+   if not version:
+      return ()
+   parts: list[int] = []
+   for part in version.replace('-', '.').lower().split('.'):
+      try:
+         parts.append(int(part.replace('v', '')))
+      except ValueError:
+         has_ival = False
+         ival = 0
+         cval = 0
+         for ch in part:
+            if ch >= '0' and ch <= '9':
+               if cval:
+                  parts.append(-cval)
+                  cval = 0
+               ival = ival * 10 + int(ch)
+               has_ival = True
+            else:
+               if has_ival:
+                  parts.append(ival)
+                  has_ival = False
+                  ival = 0
+               cval = cval * 256 + ord(ch)
+         if has_ival:
+            parts.append(ival)
+         elif cval:
+            parts.append(-cval)
+   return tuple(parts)
+
 
 def _optional_extend(info: dict[str, Any], key: str) -> dict[str, Any]:
    """Return a modifier dict to extend another dict.
@@ -152,6 +190,11 @@ class BasePackage:
       repo = selector.to_selector('')
       for fn, info in data.get('license_files', {}).items():
          self.licenses.add_file_from_cache(repo.to_absolute(fn), info)
+
+   @property
+   def version_tuple(self) -> VersionKey:
+      """A tuple suitable for comparing package versions."""
+      return version_tuple(self.version)
 
    @property
    def key(self) -> str:

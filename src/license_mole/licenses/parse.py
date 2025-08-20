@@ -477,11 +477,11 @@ def analyze_license_file(path: str, author: Optional[str] = '', ignore_uncertain
       clean_license = clean_license.replace(attr, '')
 
    license_info['checksum'] = hashlib.sha256(clean_license.upper().encode(), usedforsecurity=False).hexdigest()
+   license_info['clean'] = license_info['clean'] and not license_info['attribution']
    license_info['attribution'] = (
       sorted(set(license_info['attribution']))
       or get_readme_attribution(os.path.dirname(path))
    )
-   license_info['clean'] = license_info['clean'] and not license_info['attribution']
 
    ANALYZE_CACHE[path] = license_info
    return license_info

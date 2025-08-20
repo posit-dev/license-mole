@@ -352,9 +352,6 @@ class MarkdownFixer:
          self._add_line(self._indent + '```')
          self._in_comment = True
          return '    ' + line
-      if PYTHON_SPECIAL_END.search(line):
-         self._in_comment = False
-         return f'{line}\n{self._indent}```'
       # The remaining special cases require at least one line of context
       if len(self._lines) == 0:
          return line
@@ -371,6 +368,17 @@ class MarkdownFixer:
       if len(prev) < VERY_SHORT_LINE and len(line) > HANGING_WORD:
          self._add_line(False)
          return line
+      return line
+
+   def _format_comment_special_cases(self, line: str) -> str:  # noqa: PLR0911,PLR0912
+      """Apply a subset of special-case fixes that apply inside comments.
+
+      :param line: The new line to be rendered
+      :return: The fixed line
+      """
+      # Don't misrender version table in Python license
+      if PYTHON_SPECIAL_END.search(line):
+         return f'{line}\n{self._indent}```'
       return line
 
    def _convert_underlines(self, line: str) -> bool:
@@ -478,6 +486,8 @@ class MarkdownFixer:
       else:
          # In a comment, treat a ` # ` blockquote as spacing.
          line = re.sub(r'^\s+#', r' ', line)
+         # Fix special cases
+         line = self._format_comment_special_cases(line)
 
       line = self._apply_indent(line)
 

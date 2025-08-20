@@ -13,6 +13,7 @@ from ..config import RELABEL
 from ..config_format import FormatDict, UnderlineDescriptor
 from ..errors import HomepageMissingError
 from ..licenses import normalize_ltype_for_comparison
+from ..licenses.parse import analyze_license_file
 from ..markdown import md_link
 from ..scan.package import BasePackage
 from . import labels as rl
@@ -161,6 +162,8 @@ def _select_nonshared_license_files(licenses: dict[str, str], shared_licenses: d
       by_path[path] = [*by_path.get(path, []), normalize_ltype_for_comparison(ltype)]
 
    for path, ltypes in dict(by_path).items():
+      if not analyze_license_file(path, ignore_uncertain=True)['clean']:
+         continue
       if all(ltype in shared_licenses for ltype in ltypes):
          del by_path[path]
 

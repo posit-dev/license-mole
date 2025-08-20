@@ -183,13 +183,13 @@ class NoticeRenderer(LicenseContext):
       for path in pkg.licenses.values():
          path_count[path] = path_count.get(path, 0) + 1
       for ltype, path in pkg.licenses.items():
-         if pkg.unversioned not in self.excluded:
+         info = analyze_license_file(path, ignore_uncertain=True)
+         if pkg.unversioned not in self.excluded and info['clean']:
             compare_ltype = normalize_ltype_for_comparison(ltype)
             if compare_ltype not in self.license_usage:
                self.license_usage[compare_ltype] = set()
             self.license_usage[compare_ltype].add(pkg.render_name)
          if path_count[path] == 1:
-            info = analyze_license_file(path, ignore_uncertain=True)
             license_registry.add(ltype, info, pkg.key)
 
    def write(self, path: str):

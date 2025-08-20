@@ -4,6 +4,15 @@ Exception classes used across license-mole.
 
 Copyright (c) 2025 Posit Software, PBC
 
+### *exception* license_mole.errors.HomepageMissingError(key: str)
+
+Bases: `RuntimeError`
+
+Error raised when a package’s homepage cannot be resolved.
+
+* **Parameters:**
+  **key** – package identifier
+
 ### *exception* license_mole.errors.LicenseConflictError(ltype: str, source: tuple[str, str], new_ltype: str, new_source: tuple[str, str])
 
 Bases: `RuntimeError`

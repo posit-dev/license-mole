@@ -1,6 +1,7 @@
 exclude = [
   '.git',
   '__pycache__',
+  'docs/source/conf.py',
 ]
 indent-width = 3
 line-length = 128
@@ -45,7 +46,6 @@ pydocstyle.convention = "numpy"
 flake8-quotes.inline-quotes = "single"
 flake8-annotations.suppress-dummy-args = true
 flake8-annotations.suppress-none-returning = true
-
 
 [format]
 quote-style = "single"

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+HOOK_NAME=$(basename $0)
+if [[ "$HOOK_NAME" == "run-hook" ]]; then
+  echo "run-hook: This script should not be run directly. It should be invoked through a symlink."
+  exit 1
+fi
+HOOK_PATH="hooks/$HOOK_NAME"
+if [[ -f "$HOOK_PATH" ]]; then
+  source $HOOK_PATH
+fi

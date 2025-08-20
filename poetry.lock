@@ -190,6 +190,18 @@ files = [
 markers = {dev = "platform_system == \"Windows\"", docs = "sys_platform == \"win32\""}
 
 [[package]]
+name = "commitlint"
+version = "1.3.0"
+description = "commitlint is is a pre-commit hook designed to lint your commit messages according to the Conventional Commits standard."
+optional = false
+python-versions = "*"
+groups = ["dev"]
+files = [
+    {file = "commitlint-1.3.0-py3-none-any.whl", hash = "sha256:64691dace7caa58ab9bdf904fca27d899935025b445a1c216c911d8fba0b22e4"},
+    {file = "commitlint-1.3.0.tar.gz", hash = "sha256:a8d7f2de60ed0d29d63c1ff2bd71c31acd9425b5e2c2685d90c09abfbb2e3c7f"},
+]
+
+[[package]]
 name = "deprecated"
 version = "1.2.18"
 description = "Python @deprecated decorator to deprecate old python classes, functions or methods."
@@ -208,12 +220,29 @@ wrapt = ">=1.10,<2"
 dev = ["PyTest", "PyTest-Cov", "bump2version (<1)", "setuptools ; python_version >= \"3.12\"", "tox"]
 
 [[package]]
+name = "docstring-parser-fork"
+version = "0.0.13"
+description = "Parse Python docstrings in reST, Google and Numpydoc format"
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+files = [
+    {file = "docstring_parser_fork-0.0.13-py3-none-any.whl", hash = "sha256:77219f949721de65916514dfcdfefc6651f92145a811927025e3f7df7cf222a8"},
+    {file = "docstring_parser_fork-0.0.13.tar.gz", hash = "sha256:3635d3ef6438766882c25046cf2cc073c0a471e1d5cb36ee674f7de948d77749"},
+]
+
+[package.extras]
+dev = ["docstring-parser[docs]", "docstring-parser[test]", "pre-commit (>=2.16.0) ; python_version >= \"3.9\""]
+docs = ["pydoctor (>=25.4.0)"]
+test = ["pytest"]
+
+[[package]]
 name = "docutils"
 version = "0.21.2"
 description = "Docutils -- Python Documentation Utilities"
 optional = false
 python-versions = ">=3.9"
-groups = ["docs"]
+groups = ["dev", "docs"]
 files = [
     {file = "docutils-0.21.2-py3-none-any.whl", hash = "sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2"},
     {file = "docutils-0.21.2.tar.gz", hash = "sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f"},
@@ -249,6 +278,58 @@ files = [
 mccabe = ">=0.7.0,<0.8.0"
 pycodestyle = ">=2.14.0,<2.15.0"
 pyflakes = ">=3.4.0,<3.5.0"
+
+[[package]]
+name = "flake8-docstrings"
+version = "1.7.0"
+description = "Extension for flake8 which uses pydocstyle to check docstrings"
+optional = false
+python-versions = ">=3.7"
+groups = ["dev"]
+files = [
+    {file = "flake8_docstrings-1.7.0-py2.py3-none-any.whl", hash = "sha256:51f2344026da083fc084166a9353f5082b01f72901df422f74b4d953ae88ac75"},
+    {file = "flake8_docstrings-1.7.0.tar.gz", hash = "sha256:4c8cc748dc16e6869728699e5d0d685da9a10b0ea718e090b1ba088e67a941af"},
+]
+
+[package.dependencies]
+flake8 = ">=3"
+pydocstyle = ">=2.1"
+
+[[package]]
+name = "flake8-import-order"
+version = "0.19.2"
+description = "Flake8 and pylama plugin that checks the ordering of import statements."
+optional = false
+python-versions = "*"
+groups = ["dev"]
+files = [
+    {file = "flake8_import_order-0.19.2-py3-none-any.whl", hash = "sha256:2dfe60175e7195cf36d4c573861fd2e3258cd6650cbd7616da3c6b8193b29b7c"},
+    {file = "flake8_import_order-0.19.2.tar.gz", hash = "sha256:133b3c55497631e4235074fc98a95078bba817832379f22a31f0ad2455bcb0b2"},
+]
+
+[package.dependencies]
+pycodestyle = "*"
+setuptools = "*"
+
+[[package]]
+name = "flake8-rst-docstrings"
+version = "0.3.1"
+description = "Python docstring reStructuredText (RST) validator for flake8"
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+files = [
+    {file = "flake8_rst_docstrings-0.3.1-py3-none-any.whl", hash = "sha256:ed831afca7ee47851e2162d5fa726b823b446fd46085c2164d7979ae5d9a96d7"},
+    {file = "flake8_rst_docstrings-0.3.1.tar.gz", hash = "sha256:26dcc1338caf985990677696a8a6a274f73a0c6845b85f567befd3b648db78e2"},
+]
+
+[package.dependencies]
+flake8 = ">=3"
+pygments = "*"
+restructuredtext_lint = "*"
+
+[package.extras]
+develop = ["build", "twine"]
 
 [[package]]
 name = "gitdb"
@@ -565,6 +646,21 @@ files = [
 ]
 
 [[package]]
+name = "pep8-naming"
+version = "0.15.1"
+description = "Check PEP-8 naming conventions, plugin for flake8"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+files = [
+    {file = "pep8_naming-0.15.1-py3-none-any.whl", hash = "sha256:eb63925e7fd9e028c7f7ee7b1e413ec03d1ee5de0e627012102ee0222c273c86"},
+    {file = "pep8_naming-0.15.1.tar.gz", hash = "sha256:f6f4a499aba2deeda93c1f26ccc02f3da32b035c8b2db9696b730ef2c9639d29"},
+]
+
+[package.dependencies]
+flake8 = ">=5.0.0"
+
+[[package]]
 name = "pycodestyle"
 version = "2.14.0"
 description = "Python style guide checker"
@@ -711,6 +807,43 @@ files = [
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
+name = "pydoclint"
+version = "0.6.10"
+description = "A Python docstring linter that checks arguments, returns, yields, and raises sections"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+files = [
+    {file = "pydoclint-0.6.10-py3-none-any.whl", hash = "sha256:91e3d69be30e2d9201c1d34f63f01cb9d11aa6d8cbf63156bb886f6b15fb67ba"},
+    {file = "pydoclint-0.6.10.tar.gz", hash = "sha256:171c24f273c274715f4aa8754933cad11f2013878583e02146e416e732aae8b7"},
+]
+
+[package.dependencies]
+click = ">=8.1.0"
+docstring_parser_fork = ">=0.0.12"
+
+[package.extras]
+flake8 = ["flake8 (>=4)"]
+
+[[package]]
+name = "pydocstyle"
+version = "6.3.0"
+description = "Python docstring style checker"
+optional = false
+python-versions = ">=3.6"
+groups = ["dev"]
+files = [
+    {file = "pydocstyle-6.3.0-py3-none-any.whl", hash = "sha256:118762d452a49d6b05e194ef344a55822987a462831ade91ec5c06fd2169d019"},
+    {file = "pydocstyle-6.3.0.tar.gz", hash = "sha256:7ce43f0c0ac87b07494eb9c0b462c0b73e6ff276807f204d6b53edc72b7e44e1"},
+]
+
+[package.dependencies]
+snowballstemmer = ">=2.2.0"
+
+[package.extras]
+toml = ["tomli (>=1.2.3) ; python_version < \"3.11\""]
+
+[[package]]
 name = "pyflakes"
 version = "3.4.0"
 description = "passive checker of Python programs"
@@ -828,6 +961,20 @@ files = [
 
 [package.dependencies]
 requests = ">=2.0.1,<3.0.0"
+
+[[package]]
+name = "restructuredtext-lint"
+version = "1.4.0"
+description = "reStructuredText linter"
+optional = false
+python-versions = "*"
+groups = ["dev"]
+files = [
+    {file = "restructuredtext_lint-1.4.0.tar.gz", hash = "sha256:1b235c0c922341ab6c530390892eb9e92f90b9b75046063e047cacfb0f050c45"},
+]
+
+[package.dependencies]
+docutils = ">=0.11,<1.0"
 
 [[package]]
 name = "rich"
@@ -963,7 +1110,7 @@ version = "3.0.1"
 description = "This package provides 32 stemmers for 30 languages generated from Snowball algorithms."
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*"
-groups = ["docs"]
+groups = ["dev", "docs"]
 files = [
     {file = "snowballstemmer-3.0.1-py3-none-any.whl", hash = "sha256:6cd7b3897da8d6c9ffb968a6781fa6532dce9c3618a4b127d920dab764a19064"},
     {file = "snowballstemmer-3.0.1.tar.gz", hash = "sha256:6d5eeeec8e9f84d4d56b847692bacf79bc2c8e90c7f80ca4444ff8b6f2e52895"},
@@ -1153,6 +1300,21 @@ files = [
 ]
 
 [[package]]
+name = "types-requests"
+version = "2.32.4.20250809"
+description = "Typing stubs for requests"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+files = [
+    {file = "types_requests-2.32.4.20250809-py3-none-any.whl", hash = "sha256:f73d1832fb519ece02c85b1f09d5f0dd3108938e7d47e7f94bbfa18a6782b163"},
+    {file = "types_requests-2.32.4.20250809.tar.gz", hash = "sha256:d8060de1c8ee599311f56ff58010fb4902f462a1470802cf9f6ed27bc46c4df3"},
+]
+
+[package.dependencies]
+urllib3 = ">=2"
+
+[[package]]
 name = "typing-extensions"
 version = "4.14.1"
 description = "Backported and Experimental Type Hints for Python 3.9+"
@@ -1291,4 +1453,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">= 3.12"
-content-hash = "b8a8ccc6e8453cfb0d326d1277e228f7caca2a4c02a6d9e7a6cf46798ceb5694"
+content-hash = "c15030d6c16f56ea3b73574bfa697001a6b67c73b2e4490bfae1f2dfbae6f075"

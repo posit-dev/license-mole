@@ -104,6 +104,7 @@ How to render the description of a dependency package.
 Accepted placeholders:
 
 > * `%(name)s`: The name of the package.
+> * `%(url)s`: The URL where the package can be found.
 > * `%(attribution)s`: The copyright attribution messages. Each
 >   : message is formatted using `attribution-line`.
 > * `%(message)s`: “Distributed under” messages for each license.

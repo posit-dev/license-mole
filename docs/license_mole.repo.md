@@ -4,15 +4,6 @@ Functions for finding source code repositories for packages.
 
 Copyright (c) 2025 Posit Software, PBC
 
-### *exception* license_mole.repo.HomepageMissingError(key: str)
-
-Bases: `RuntimeError`
-
-Error raised when a package’s homepage cannot be resolved.
-
-* **Parameters:**
-  **key** – package identifier
-
 ### license_mole.repo.clean_repo_url(url: str) → str
 
 Resolve a repository URL string to a proper, working HTTP(S) URL.

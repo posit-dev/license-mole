@@ -78,7 +78,7 @@ Update the scan cache for a group of packages.
   * **group** – The name of the group
   * **data** – Arbitrary JSON-serializable data
 
-### license_mole.cache.download_file_cached(url: str, verbatim: bool = False) → str
+### license_mole.cache.download_file_cached(url: str, verbatim: bool = False, headers: dict[str, str] | None = None) → str
 
 Download a text file from a URL or from a cache on disk.
 
@@ -100,6 +100,7 @@ Special cases:
 * **Parameters:**
   * **url** – The URL to the file to be downloaded
   * **verbatim** – If True, override the usual special-case handling
+  * **headers** – If set, adds headers to the HTTP request
 * **Raises:**
   **ValueError** – if the URL is not acceptable or the downloaded file
   is not UTF-8

@@ -144,17 +144,17 @@ class LicenseMoleApplication:
          return 0
       except errors.NoLicenseError as e:
          logger.error('No license information found for %s', e.key)
-         logger.error('If necessary, add data to scripts/collect_utils/override.py')
+         logger.error('If necessary, add data to the [overrides] configuration section.')
       except errors.LicenseConflictError as e:
          logger.error('Conflicting license types detected:')
          logger.error('\tPrevious: %s (from %s in %s)', e.ltype, e.source[0], e.source[1])
          logger.error('\tNew:      %s (from %s in %s)', e.new_ltype, e.new_source[0], e.new_source[1])
-         logger.error('Determine which license is correct and add it to scripts/collect_utils/override.py')
+         logger.error('Determine which license is correct and add it in the [overrides] configuration section.')
       except errors.LicenseValidationError:
-         logger.error('Consider adding missing information in scripts/collect_utils/override.py')
+         logger.error('Consider adding missing information in the [overrides] configuration section.')
       except errors.UnidentifiedLicenseError as e:
          logger.error('Could not identify license file %s for %s', e.path, e.key)
-         logger.error('Specify the license codes for this package in scripts/collect_utils/override.py')
+         logger.error('Specify the license codes for this package in the [overrides] configuration section.')
       except errors.MissingPackageError as e:
          msg_lines = str(e).split('\n')
          for line in msg_lines:
@@ -162,15 +162,16 @@ class LicenseMoleApplication:
          logger.info('You may need to install this package.')
       except errors.HomepageMissingError as e:
          logger.error('Could not find homepage for package %s', e.key)
-         logger.error('Add a repository pattern to scripts/collect_utils/repo.py')
-         logger.error('or add an override to scripts/collect_utils/override.py')
+         logger.error('Add a repository pattern to the [repos] configuration section, or')
+         logger.error('add a URL for this package in the [overrides] configuration section.')
       except rust.PackageGroupConflictError as e:
          logger.error('Rust package %s has uncertain subpackage grouping.', e.name)
          logger.error(' First group: %s', ', '.join(e.group1.licenses.attribution))
          logger.error(' Subpackages: %s', ', '.join(e.group1.children))
          logger.error('Second group: %s', ', '.join(e.group2.licenses.attribution))
          logger.error(' Subpackages: %s', ', '.join(e.group2.children))
-         logger.error('Specify how these should be handled in scripts/collect_utils/rust.py')
+         logger.error('Specify how these should be handled using the [rust.group] configuration section')
+         logger.error('or a "rename" directive in the [overrides] configuration section.')
       return 1
 
    def load_license_cache(self) -> int:

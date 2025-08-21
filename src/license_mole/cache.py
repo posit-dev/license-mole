@@ -42,8 +42,9 @@ def download_file_cached(url: str, verbatim: bool = False, headers: Optional[dic
    The file is assumed to be in UTF-8, and this function will raise an
    exception if it is not.
 
-   The cache is stored in scripts/collect_utils/web_cache. It is never
-   automatically invalidated, but it can be manually cleared.
+   The cache is stored in .mole.web_cache by default, configurable in the
+   mole.toml file. It is never automatically invalidated, but it can be
+   manually cleared.
 
    Special cases:
 
@@ -107,9 +108,12 @@ class BaseCache(Generic[T]):
    """A base class for managing cache files.
 
    The generic parameter is the type of data stored in a cache entry.
-
-   :ivar auto_save: If True, save the cache to disk on every update
    """
+
+   cache_path: str
+   """The path to the cache on disk."""
+   auto_save: bool
+   """If True, save the cache to disk on every update"""
 
    def __init__(self):
       self.cache_path = ''

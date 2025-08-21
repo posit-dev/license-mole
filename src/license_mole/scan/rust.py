@@ -13,7 +13,7 @@ from functools import cached_property
 from typing import Any, Optional, cast
 
 from .. import logger, repo
-from ..config import RUST_VENDOR, get_overrides
+from ..config import RUST_GROUP, RUST_VENDOR, get_overrides
 from ..errors import HomepageMissingError, NoLicenseError
 from ..licenses import find_license_files
 from ..licenses.parse import analyze_license_file
@@ -22,31 +22,16 @@ from . import BaseScanner
 from .manual import ManualPackage
 from .package import BasePackage, version_tuple
 
+# TODO: document better
+"""
 # If the auto-detection is worried about combining packages and you want to
 # combine them, name them here and identify which package is representative.
-ALLOW_GROUPING = {
-   'tracing-core': 'tracing',
-   'tracing-log': 'tracing',
-   'anstyle-query': 'anstyle',
-   'colorchoice': 'anstyle',
-   'clap_builder': 'clap',
-   'clap_derive': 'clap',
-   'clap_lex': 'clap',
-   'frunk_core': 'frunk',
-   'frunk_derives': 'frunk',
-   'frunk_proc_macro_helpers': 'frunk',
-   'frunk_proc_macros': 'frunk',
-   'tokio-test': 'tokio',
-   'tokio-util': 'tokio',
-}
+RUST_GROUP = {}
 
 # If the auto-detection is worried about combining packages and you want to
 # keep them separate them, provide a disambiguating name for one package here.
-KEEP_SEPARATE = {
-   'anstream': 'anstream',
-   'anstyle-query': 'anstyle-query',
-   'colorchoice': 'colorchoice',
-}
+# moved to overrides.rename
+"""
 
 
 def _hash_lockfile(path: str) -> str:
@@ -105,11 +90,11 @@ class RustBasicPackage:
       self.repo = repo.clean_repo_url(pkg.get('repository', ''))
       self.attribution: list[str] = []
 
-      self._rename = KEEP_SEPARATE.get(self.name, '')
+      overrides = get_overrides(f'rust::{self.name}')
+      self._rename = overrides.get('rename', '')
       if self._rename:
          self.name = self._rename
 
-      overrides = get_overrides(f'rust::{self.name}')
       if 'attribution' in overrides:
          self.attribution = overrides['attribution']
       else:
@@ -342,10 +327,10 @@ class RustScanner(BaseScanner):
          license/attribution metadata
       :return: The merged package, or the modified package to keep separate
       """
-      if all(ALLOW_GROUPING.get(child) == new.name for child in old.children):
+      if all(RUST_GROUP.get(child) == new.name for child in old.children):
          old.merge(new)
          return old
-      if all(ALLOW_GROUPING.get(child) == old.name for child in new.children):
+      if all(RUST_GROUP.get(child) == old.name for child in new.children):
          new.merge(old)
          return new
       raise PackageGroupConflictError(old.key, old, new)

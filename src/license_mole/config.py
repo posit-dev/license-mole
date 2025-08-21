@@ -53,6 +53,7 @@ COLLECTIONS: dict[str, list[str]] = {}
 OVERRIDES: dict[str, OverrideDict] = {}
 SPDX_OVERRIDES: dict[str, tuple[str, ...]] = {}
 RELABEL: dict[str, str] = {}
+RUST_GROUP: dict[str, str] = {}
 # re-export
 OUTPUTS = _OUTPUTS
 FORMATS = _FORMATS
@@ -258,6 +259,7 @@ def load_config(path: str):
    RELABEL.update(config.value('relabel', {}))
    cf.populate_formats(config.group('formats'))
    cf.populate_outputs(config.required_group('output'))
+   RUST_GROUP.update(config.group('rust').value('group', {}))
 
    cache.set_web_cache_root(_resolve_cache_path(config, 'web_cache', '.mole.web_cache'))
    cache.scan_cache.load(_resolve_cache_path(config, 'scan_cache', '.mole.scan_cache.json'))

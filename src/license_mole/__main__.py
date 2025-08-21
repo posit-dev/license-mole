@@ -41,7 +41,7 @@ import sys
 from typing import TYPE_CHECKING, Optional
 
 from . import __version__, errors, logger, scan
-from .cache import license_cache
+from .cache import license_cache, scan_cache
 from .config import COLLECTIONS, GROUPS, OUTPUTS, load_config
 from .render import NoticeRenderer, RenderGroup
 from .scan import rust
@@ -96,7 +96,8 @@ class LicenseMoleApplication:
          logger.info('Package dependency cache is up-to-date.')
          return 0
       logger.error('Package dependency cache requires updating.')
-      logger.error('Please scan for new dependencies and check in scan_cache.json.')
+      cache_path = os.path.relpath(scan_cache.cache_path, start=self.args.ROOT)
+      logger.error(f'Please scan for new dependencies and commit {cache_path}.')
       return 1
 
    def _scan_all_groups(self):

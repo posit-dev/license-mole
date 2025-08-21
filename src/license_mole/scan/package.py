@@ -138,8 +138,9 @@ class BasePackage:
       self._overrides = get_overrides(self.key)
       self.permit_license_change = self._overrides.get('permit_license_change', False)
 
-      if 'rename' in self._overrides:
-         self.name = self._overrides['rename']
+      self._rename = self._overrides.get('rename', '')
+      if self._rename:
+         self.name = self._rename
          # force the key property to be recomputed with the modified value
          del self.key
 

@@ -112,7 +112,7 @@ class BaseCache(Generic[T]):
    """
 
    def __init__(self):
-      self._cache_path = ''
+      self.cache_path = ''
       self._cache: dict[str, T] = {}
       self._hashes: dict[str, int] = {}
       self.auto_save = True
@@ -123,7 +123,7 @@ class BaseCache(Generic[T]):
       :param path: Path to the cache file
       """
       try:
-         self._cache_path = path
+         self.cache_path = path
          with open(path, 'rb') as f:
             self._cache = json.load(f)
       except FileNotFoundError:
@@ -135,12 +135,12 @@ class BaseCache(Generic[T]):
       """Update the cache on disk."""
       sorted_cache = dict(sorted(self._cache.items()))
       try:
-         with open(self._cache_path + '.tmp', 'w', encoding='utf8') as f:
+         with open(self.cache_path + '.tmp', 'w', encoding='utf8') as f:
             json.dump(sorted_cache, f, indent=' ')
-         os.replace(self._cache_path + '.tmp', self._cache_path)
+         os.replace(self.cache_path + '.tmp', self.cache_path)
       except Exception:
          try:
-            os.unlink(self._cache_path + '.tmp')
+            os.unlink(self.cache_path + '.tmp')
          except FileNotFoundError:
             pass
          raise

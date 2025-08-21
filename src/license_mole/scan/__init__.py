@@ -150,13 +150,17 @@ def check_cache(
    :return: True if the cache is up-to-date
    """
    for scanner, pkg_paths in _iterate_packages(scanner_class, groups_to_scan):
+      pkg_type = scanner.package_type.lower()
       cached_data = scan_cache.get(scanner.package_type, scanner.group)
       if not cached_data:
+         logger.warning(f'New group "{pkg_type}.{scanner.group}" found.')
          return False
       root_key = _root_key(pkg_paths)
       if root_key != cached_data.get('!root'):
+         logger.warning(f'Cached data for "{pkg_type}.{scanner.group}" refers to a different path.')
          return False
       if not scanner.compare_cache(cached_data, pkg_paths):
+         logger.warning(f'Cached data for "{pkg_type}.{scanner.group}" does not match current state.')
          return False
    return True
 

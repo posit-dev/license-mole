@@ -40,7 +40,7 @@ class OverrideDict(TypedDict, total=False):
    """SPDX-style license identifier(s)."""
    url: str
    """The URL for the package source code repository."""
-   license_files: list[str]
+   license_files: list[PathSelector]
    """Absolute paths or URLs to the text of the license."""
    attribution: list[str]
    """Copyright lines, ideally with year and author."""
@@ -133,7 +133,7 @@ _EXPECTED_TYPES: dict[str, type | tuple[type, type]] = {
    'author': str,
    'url': str,
    'license': (tuple, str),
-   'license_files': (list, str),
+   'license_files': (list, PathSelector),
    'attribution': (list, str),
    'permit_license_change': bool,
 }
@@ -149,6 +149,11 @@ def _validate_override(package: str, key: str, value: Any) -> Any:  # noqa: ANN4
    :raises TypeError: if the value is of the wrong data type
    :return: The cleaned value
    """
+   if key == 'license_files':
+      # Special-case handling because of union type
+      if not isinstance(value, list):
+         value = [value]
+
    if key not in _EXPECTED_TYPES:
       raise KeyError(f'unexpected key "{key}" in override')
    expected = _EXPECTED_TYPES[key]
@@ -159,6 +164,11 @@ def _validate_override(package: str, key: str, value: Any) -> Any:  # noqa: ANN4
       if expected[0] is tuple and isinstance(value, list):
          # translate list to tuple
          value = tuple(value)
+      if expected[1] is PathSelector:
+         try:
+            value = [PathSelector.parse(v) for v in value]
+         except TypeError:
+            raise TypeError(_type_mismatch(f"overrides.'{package}'.{key}", expected, value)) from None
       if not isinstance(value, expected[0]):
          raise TypeError(_type_mismatch(f"overrides.'{package}'.{key}", expected, value))
       for v in cast('tuple', value):

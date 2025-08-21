@@ -12,6 +12,8 @@ __version__ = '0.0.1'
 logger = logging.getLogger(__name__)
 
 # Never try to fetch pages from these domain names
+# because of anti-automation protections
 DOMAIN_BLACKLIST = [
    'gitlab.gnome.org',
+   'git.kernel.org',
 ]

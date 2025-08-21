@@ -5,7 +5,7 @@ Copyright (c) 2025 Posit Software, PBC
 """
 
 import os
-from typing import NamedTuple, Optional, Union
+from typing import Iterable, NamedTuple, Optional, Union
 
 REPO_PATHS: dict[Optional[str], str] = {}
 
@@ -81,6 +81,30 @@ class PathSelector(NamedTuple):
 
    def __bool__(self) -> bool:
       return self != NULLPATH
+
+   @staticmethod
+   def parse(value: Union[str, Iterable[str]]) -> 'PathSelector':
+      """Parse a value (perhaps from a config file) into a PathSelector.
+
+      :param value: A serialized representation of a path selector
+      :raises TYpeError: if the value cannot be converted to a PathSelector
+      :return: The path selector
+      """
+      try:
+         if isinstance(value, str):
+            if value.startswith('@/'):
+               return PathSelector('@', value[2:])
+            return PathSelector('', value)
+         parts: list[str] = []
+         for part in value:
+            if not isinstance(part, str):
+               raise TypeError()
+            parts.append(part)
+         if len(parts) != 2:  # noqa: PLR2004
+            raise TypeError()
+         return PathSelector(parts[0], parts[1])
+      except TypeError:
+         raise TypeError('PathSelector expects str or [str, str]') from None
 
 
 NULLPATH = PathSelector('', 'null://')

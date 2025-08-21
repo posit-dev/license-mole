@@ -163,7 +163,7 @@ def _cargo_vendor(path: str) -> dict[str, RustBasicPackage]:
       )
 
    packages: dict[str, RustBasicPackage] = {}
-   for cargo_toml in sorted(glob.glob(f'{destdir}/*/Cargo.toml')):
+   for cargo_toml in sorted(glob.glob(destdir.to_absolute('*/Cargo.toml'))):
       with open(cargo_toml, 'rb') as f:
          pkg_info = tomllib.load(f)['package']
 

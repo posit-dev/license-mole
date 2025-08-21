@@ -464,8 +464,10 @@ class RenderPackage:
          for ltype in sorted(self.licenses.keys()):
             ltype = normalize_ltype(ltype)
             use_link = ltype not in nonshared and ltype in context.shared_licenses
+            if ltype not in rl.LICENSE_NAMES:
+               logger.warning(f'No license name for "{ltype}"; guessing.')
             lines.append(md_link(
-               rl.LICENSE_NAMES[ltype],
+               rl.LICENSE_NAMES.get(ltype, f'{ltype} License'),
                ltype if use_link else '',
             ))
          license_messages = fmt['multi_license_lines'] % {

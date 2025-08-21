@@ -364,7 +364,7 @@ def _third_pass(dep: BasePackage) -> bool:
       return True
 
    if num_ltypes > 0 and num_files == 0:
-      for ltype in dep.licenses:
+      for ltype in list(dep.licenses):  # be sure to copy the list
          source = licenses.get_file_for_type(ltype, dep.licenses.attribution)
          if source:
             dep.licenses.add_file(source)

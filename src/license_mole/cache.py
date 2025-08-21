@@ -9,6 +9,7 @@ import json
 import os
 import re
 from base64 import standard_b64decode
+from datetime import datetime
 from typing import Any, Generic, ItemsView, Optional, TypeVar, cast
 
 import requests
@@ -19,6 +20,8 @@ T = TypeVar('T')
 _CLEAN_URL = re.compile(r'[^A-Za-z0-9]+')
 _WEB_CACHE = ''
 _RUST_CACHE = ''
+_FIREFOX_VERSION = 134 + (datetime.now().year - 2025) * 12 + datetime.now().month
+USER_AGENT = f'Mozilla/5.0 (X11; Linux x86_64; rv:{_FIREFOX_VERSION}.0) Gecko/20100101 Firefox/{_FIREFOX_VERSION}.0'
 
 
 def set_web_cache_root(path: str):
@@ -79,7 +82,15 @@ def download_file_cached(url: str, verbatim: bool = False, headers: Optional[dic
       with open(cache_file, 'r', encoding='utf8') as f:
          return f.read()
    logger.debug('Downloading %s to %s...', url, cs)
-   response = requests.get(url, timeout=15.0, allow_redirects=True, headers=headers)
+   response = requests.get(
+      url,
+      timeout=15.0,
+      allow_redirects=True,
+      headers={
+         'User-Agent': USER_AGENT,
+         **(headers or {}),
+      },
+   )
    if response.status_code == requests.codes['ok']:
       if '/+/' in url:
          text = standard_b64decode(response.content).decode()

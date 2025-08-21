@@ -2,7 +2,7 @@
  "Python": {
   "mole": {
    "!checksums": {
-    "poetry.lock": "35ac2f46d1625aa5141fa958fd678b50310a9846838153f2af3ddf288635aa31"
+    "poetry.lock": "b0c0d2c3de32e25e92884943a46132b94a1c8dbac344b213dbaa0fbd036b6633"
    },
    "py::requests==2.32.5": {
     "name": "requests",

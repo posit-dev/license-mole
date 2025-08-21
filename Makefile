@@ -41,8 +41,8 @@ lint: dev-deps
 	@echo -n "ruff: "
 	@poetry run ruff check
 
-changelog: dev-deps
-	poetry run semantic-release --strict --noop version
+version-bump: dev-deps
+	poetry run semantic-release --strict version
 
 publish: changelog
 	poetry run semantic-release --strict publish

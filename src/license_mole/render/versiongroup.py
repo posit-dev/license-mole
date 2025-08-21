@@ -134,7 +134,7 @@ class VersionGroup:
       if compare['ltype'] != prev['ltype']:
          # License explicitly changed
          return True, compare
-      if not prev['attr'].issubset(compare['attr']):
+      if not compare['attr'].issubset(prev['attr']):
          # Attribution changed by more than just new contributors
          return True, compare
       unmatched = set(compare['file'])
@@ -186,12 +186,13 @@ class VersionGroup:
       for vgrp in self:
          all_packages.extend(vgrp)
       for vgrp in other:
-         all_packages.extend(p for p in vgrp if p.key not in exclude)
+         all_packages.extend(vgrp)
       all_packages.sort()
       self._last_compare = None
       self.version_groups = []
       for pkg in all_packages:
-         self._add_package(pkg)
+         if pkg.key not in exclude:
+            self._add_package(pkg)
 
    def render_summary(self, fmt: FormatDict) -> list[str]:
       """Render a Markdown summary of the packages in the group.

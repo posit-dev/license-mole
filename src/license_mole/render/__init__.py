@@ -114,7 +114,7 @@ class NoticeRenderer(LicenseContext):
             if rgrp.name in self._used_sections:
                self._included.add(vgrp.name)
             if vgrp.name in self.packages:
-               self.packages[vgrp.name].merge(vgrp, self.excluded)
+               self._merge(vgrp)
             else:
                new_vgrp = vgrp.clone(self.excluded)
                if new_vgrp:
@@ -137,6 +137,20 @@ class NoticeRenderer(LicenseContext):
       for grp in groups.values():
          excluded.add(grp.key)
       return excluded
+
+   def _merge(self, vgrp: VersionGroup):
+      """Merge a version group into the collection.
+
+      :param vgrp: The version group to merge
+      """
+      existing = self.packages[vgrp.name]
+      if vgrp.sort_key > existing.sort_key:
+         # package is older, merge into current
+         existing.merge(vgrp, self.excluded)
+      else:
+         # package is newer, merge current into it and replace
+         vgrp.merge(existing, self.excluded)
+         self.packages[vgrp.name] = vgrp
 
    def _render_summaries(self):
       """Collect summaries for each functional group."""

@@ -19,6 +19,7 @@ Mole makes use of the following open-source Python modules:
 - Distributed under the Mozilla Public License version 2.0
 
 **Mozilla Public License version 2.0 text:**
+
 > This package contains a modified version of ca-bundle.crt:
 >
 > ca-bundle.crt -- Bundle of CA Root Certificates
@@ -48,6 +49,7 @@ Mole makes use of the following open-source Python modules:
 - Distributed under the MIT License
 
 **MIT License text:**
+
 > MIT License
 >
 > Copyright (c) 2025 TAHRI Ahmed R.
@@ -76,6 +78,7 @@ Mole makes use of the following open-source Python modules:
 - Distributed under the BSD 3-Clause license
 
 **BSD 3-Clause license text:**
+
 > BSD 3-Clause License
 >
 > Copyright (c) 2013-2025, Kim Davies and contributors.
@@ -114,6 +117,7 @@ Mole makes use of the following open-source Python modules:
 - Distributed under the Apache License version 2.0
 
 **Apache License version 2.0 text:**
+
 > Apache License
 >
 > Version 2.0, January 2004
@@ -297,6 +301,7 @@ Mole makes use of the following open-source Python modules:
 - Distributed under the MIT License
 
 **MIT License text:**
+
 > MIT License
 >
 > Copyright (c) 2008-2020 Andrey Petrov and contributors.

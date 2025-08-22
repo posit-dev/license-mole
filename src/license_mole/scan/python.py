@@ -15,7 +15,7 @@ from ..pathselector import PathSelector
 from . import BaseScanner
 from .package import BasePackage, VersionKey, version_tuple
 
-ATOM_RE = re.compile(r'^([^ =<>!\[]+)\s*(\[[^\]]+\])?\s*((?:(?:<|<=|>|>=|==|!=)\s*[^<>=\s,]+\s*(?:,|$))*)')
+ATOM_RE = re.compile(r'^([^ =<>!\[]+)\s*(?:(\[[^\]]+\])?\s*((?:(?:<|<=|>|>=|==|!=)\s*[^<>=\s,]+\s*(?:,|$))*))?\s*$')
 VERSION_RE = re.compile(r'(<|<=|>|>=|==|!=)\s*([^<>=\s]+)$')
 
 
@@ -42,6 +42,8 @@ def _parse_atom(atom: str) -> _ParsedAtom:
 
    versions = []
    for version in version_str.split(','):
+      if not version:
+         continue
       match = VERSION_RE.match(version.strip())
       if not match:
          raise ValueError(f'Unparseable version "{version}" in atom: "{atom}"')

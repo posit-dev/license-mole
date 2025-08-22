@@ -1,8 +1,14 @@
+<a id="module-license_mole.licenses.resources"></a>
+
+<a id="license-mole-licenses-resources-package"></a>
+
 # license_mole.licenses.resources package
 
 Access to predefined license text.
 
 Copyright (c) 2025 Posit Software, PBC
+
+<a id="license_mole.licenses.resources.get_standard_license_reference"></a>
 
 ### license_mole.licenses.resources.get_standard_license_reference(spdx: str) → str
 
@@ -15,6 +21,8 @@ Produce a URI for the standard text for a license.
 * **Returns:**
   A URI for the license.
 
+<a id="license_mole.licenses.resources.get_standard_license_text"></a>
+
 ### license_mole.licenses.resources.get_standard_license_text(spdx: str) → str
 
 Retrieve the standard text for a license.
@@ -25,9 +33,11 @@ ISC, BSD, or MIT will include copyright attribution in their license files.
 
 * **Parameters:**
   **spdx** – The SPDX identifier of the license, or a reference returned by
-  py:func:get_standard_license_reference.
+  [`get_standard_license_reference()`](#license_mole.licenses.resources.get_standard_license_reference).
 * **Returns:**
   The text of the license.
+
+<a id="license_mole.licenses.resources.is_safe_license_text"></a>
 
 ### license_mole.licenses.resources.is_safe_license_text(spdx: str, attribution: list[str] | None) → bool
 

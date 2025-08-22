@@ -1,11 +1,17 @@
+<a id="module-license_mole.licenses.parse"></a>
+
+<a id="license-mole-licenses-parse-module"></a>
+
 # license_mole.licenses.parse module
 
 Functions for heuristically parsing license files.
 
 Copyright (c) 2025 Posit Software, PBC
 
-By convention, the name ltype is used to refer to an SPDX-style license
+By convention, the name `ltype` is used to refer to an SPDX-style license
 identifier across the codebase.
+
+<a id="license_mole.licenses.parse.LicenseInfo"></a>
 
 ### *class* license_mole.licenses.parse.LicenseInfo
 
@@ -13,31 +19,55 @@ Bases: `TypedDict`
 
 Heuristic description of a license file.
 
-* **Variables:**
-  * **author** – The author passed into this function
-  * **path** – The path passed into this function
-  * **attribution** – Detected copyright attribution lines
-  * **spdx** – Unambiguously-detected SPDX identifiers
-  * **guess** – Heuristically-inferred SPDX identifier, if any
-  * **checksum** – The checksum of the normalized license text
-  * **multi** – File has multiple detected licenses inside
-  * **clean** – File can be reused for other packages
+<a id="license_mole.licenses.parse.LicenseInfo.attribution"></a>
 
 #### attribution *: list[str]*
 
+Detected copyright attribution lines
+
+<a id="license_mole.licenses.parse.LicenseInfo.author"></a>
+
 #### author *: str | None*
+
+The author passed into this function
+
+<a id="license_mole.licenses.parse.LicenseInfo.checksum"></a>
 
 #### checksum *: str*
 
+The checksum of the normalized license text
+
+<a id="license_mole.licenses.parse.LicenseInfo.clean"></a>
+
 #### clean *: bool*
+
+File can be reused for other packages
+
+<a id="license_mole.licenses.parse.LicenseInfo.guess"></a>
 
 #### guess *: str | None*
 
+Heuristically-inferred SPDX identifier, if any
+
+<a id="license_mole.licenses.parse.LicenseInfo.multi"></a>
+
 #### multi *: bool*
+
+File has multiple detected licenses inside
+
+<a id="license_mole.licenses.parse.LicenseInfo.path"></a>
 
 #### path *: str*
 
+The path passed into this function
+
+<a id="license_mole.licenses.parse.LicenseInfo.spdx"></a>
+
 #### spdx *: tuple[str, ...]*
+
+Unambiguously-detected SPDX identifiers
+
+<a id="license_mole.licenses.parse.analyze_license_file"></a>
 
 ### license_mole.licenses.parse.analyze_license_file(path: str, author: str | None = '', ignore_uncertain: bool = False) → [LicenseInfo](#license_mole.licenses.parse.LicenseInfo)
 
@@ -51,6 +81,8 @@ Load and analyzes a license file to collect heuristics.
   **ValueError** – if the file contains no license text
 * **Returns:**
   License file description
+
+<a id="license_mole.licenses.parse.get_license_text"></a>
 
 ### license_mole.licenses.parse.get_license_text(path: str) → str
 
@@ -70,6 +102,8 @@ recommended to use this on HTML files, and HTML anchors are not supported.)
 * **Returns:**
   The text of the license file
 
+<a id="license_mole.licenses.parse.get_readme_attribution"></a>
+
 ### license_mole.licenses.parse.get_readme_attribution(path: str) → list[str]
 
 Extract attribution lines from a readme file.
@@ -79,12 +113,14 @@ Extract attribution lines from a readme file.
 * **Returns:**
   List of copyright attribution lines
 
+<a id="license_mole.licenses.parse.normalize_license_code"></a>
+
 ### license_mole.licenses.parse.normalize_license_code(ltype: str) → tuple[str, ...]
 
 Split a license identifier into a tuple of SPDX identifiers.
 
 The result is suitable for rendering, but not for comparison.
-See licenses.normalize_ltype_for_comparison for a normalization scheme
+See `licenses.normalize_ltype_for_comparison` for a normalization scheme
 that will allow license identifiers to be compared to each other.
 
 * **Parameters:**

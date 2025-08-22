@@ -11,14 +11,21 @@ REPO_PATHS: dict[Optional[str], str] = {}
 
 
 class PathSelector(NamedTuple):
-   """A resolved group root selector.
-
-   :ivar repo: The environment variable used to find the repository
-   :ivar path: The absolute path to the selected path in the repository
-   """
+   """A resolved group root selector."""
 
    repo: str
+   """The environment variable used to find the repository.
+
+   There are three special cases:
+
+   * ``''``: An empty string refers to the root project repository.
+
+   * ``@``: Refers to a file contained within an installed package.
+
+   * `~.config.RUST_VENDOR`: Refers to a file contained within the Rust package cache.
+   """
    path: str
+   """The absolute path to the selected path in the repository."""
 
    def to_absolute(self, path: str = '.') -> str:
       """Return the absolute path to a file in the repository.
@@ -87,7 +94,7 @@ class PathSelector(NamedTuple):
       """Parse a value (perhaps from a config file) into a PathSelector.
 
       :param value: A serialized representation of a path selector
-      :raises TYpeError: if the value cannot be converted to a PathSelector
+      :raises TypeError: if the value cannot be converted to a PathSelector
       :return: The path selector
       """
       try:
@@ -108,3 +115,4 @@ class PathSelector(NamedTuple):
 
 
 NULLPATH = PathSelector('', 'null://')
+"""A special PathSelector that uniquely represents the absence of a file."""

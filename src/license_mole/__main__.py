@@ -38,30 +38,29 @@ import argparse
 import logging
 import os
 import sys
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from . import __version__, errors, logger, scan
 from .cache import license_cache, scan_cache
 from .config import COLLECTIONS, GROUPS, OUTPUTS, load_config
 from .render import NoticeRenderer, RenderGroup
-from .scan import rust
-
-if TYPE_CHECKING:
-   from .scan.package import BasePackage
+from .scan import BasePackage, rust
 
 
 class LicenseMoleApplication:
-   """The driver for the license-mole CLI application.
+   """The driver for the license-mole CLI application."""
 
-   :ivar args: The parsed command-line arguments
-   :ivar collections:
-   :ivar render_groups:
-   """
+   args: argparse.Namespace
+   """The parsed command-line arguments."""
+   collections: dict[str, list[BasePackage]]
+   """Scanned packages, organized by collection."""
+   render_groups: dict[str, RenderGroup]
+   """Preprocessed packages, organized by group."""
 
    def __init__(self):
-      self.args: argparse.Namespace = argparse.Namespace()
-      self.collections: dict[str, list[BasePackage]] = {}
-      self.render_groups: dict[str, RenderGroup] = {}
+      self.args = argparse.Namespace()
+      self.collections = {}
+      self.render_groups = {}
 
    def validate_args(self) -> bool:
       """Check the command-line arguments for errors.

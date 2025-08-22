@@ -1,8 +1,14 @@
+<a id="module-license_mole.cache"></a>
+
+<a id="license-mole-cache-module"></a>
+
 # license_mole.cache module
 
 Functions for managing license-mole’s cache files.
 
 Copyright (c) 2025 Posit Software, PBC
+
+<a id="license_mole.cache.BaseCache"></a>
 
 ### *class* license_mole.cache.BaseCache
 
@@ -12,8 +18,19 @@ A base class for managing cache files.
 
 The generic parameter is the type of data stored in a cache entry.
 
-* **Variables:**
-  **auto_save** – If True, save the cache to disk on every update
+<a id="license_mole.cache.BaseCache.auto_save"></a>
+
+#### auto_save *: bool*
+
+If True, save the cache to disk on every update
+
+<a id="license_mole.cache.BaseCache.cache_path"></a>
+
+#### cache_path *: str*
+
+The path to the cache on disk.
+
+<a id="license_mole.cache.BaseCache.get"></a>
 
 #### get(key: str, default: T | None = None) → T
 
@@ -25,9 +42,13 @@ Retrieve a value from the cache.
 * **Returns:**
   The cached data
 
+<a id="license_mole.cache.BaseCache.items"></a>
+
 #### items() → ItemsView[str, T]
 
 Return an iterator over the cached items.
+
+<a id="license_mole.cache.BaseCache.load"></a>
 
 #### load(path: str)
 
@@ -36,9 +57,13 @@ Load the cache from disk.
 * **Parameters:**
   **path** – Path to the cache file
 
+<a id="license_mole.cache.BaseCache.save"></a>
+
 #### save()
 
 Update the cache on disk.
+
+<a id="license_mole.cache.BaseCache.set"></a>
 
 #### set(key: str, value: T)
 
@@ -47,6 +72,8 @@ Update the cache with new data.
 * **Parameters:**
   * **key** – The key to the cached data
   * **value** – JSON-serializable data
+
+<a id="license_mole.cache.ScanCache"></a>
 
 ### *class* license_mole.cache.ScanCache
 
@@ -59,6 +86,8 @@ The scan cache file should be revision-controlled.
 The cache is keyed by package type.
 Cache values are a dict keyed by package key with type-defined values.
 
+<a id="license_mole.cache.ScanCache.get"></a>
+
 #### get(package_type: str, group: str) → dict[str, Any]
 
 Fetch cached data for a package group.
@@ -69,6 +98,8 @@ Fetch cached data for a package group.
 * **Returns:**
   Arbitrary JSON-serializable data
 
+<a id="license_mole.cache.ScanCache.set"></a>
+
 #### set(package_type: str, group: str, data: dict[str, Any])
 
 Update the scan cache for a group of packages.
@@ -78,6 +109,8 @@ Update the scan cache for a group of packages.
   * **group** – The name of the group
   * **data** – Arbitrary JSON-serializable data
 
+<a id="license_mole.cache.download_file_cached"></a>
+
 ### license_mole.cache.download_file_cached(url: str, verbatim: bool = False, headers: dict[str, str] | None = None) → str
 
 Download a text file from a URL or from a cache on disk.
@@ -85,8 +118,9 @@ Download a text file from a URL or from a cache on disk.
 The file is assumed to be in UTF-8, and this function will raise an
 exception if it is not.
 
-The cache is stored in scripts/collect_utils/web_cache. It is never
-automatically invalidated, but it can be manually cleared.
+The cache is stored in .mole.web_cache by default, configurable in the
+mole.toml file. It is never automatically invalidated, but it can be
+manually cleared.
 
 Special cases:
 
@@ -106,6 +140,8 @@ Special cases:
   is not UTF-8
 * **Returns:**
   The content of the requested file
+
+<a id="license_mole.cache.set_web_cache_root"></a>
 
 ### license_mole.cache.set_web_cache_root(path: str)
 

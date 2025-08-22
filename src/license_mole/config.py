@@ -61,6 +61,7 @@ FORMATS = _FORMATS
 # A unique identifier that can't (easily) appear in a toml file
 # Used to create PathSelector objects that refer to the Rust vendor cache
 RUST_VENDOR = '\0RUST'
+"""A unique identifier to create :py:class:`PathSelector` objects that refer to the Rust vendor cache."""
 
 _GLOB_CACHE: dict[str, re.Pattern] = {}
 

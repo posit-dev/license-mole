@@ -138,13 +138,14 @@ class NpmPackage(BasePackage):
 
    The constructor loads package.json and collects relevant information.
 
-   :ivar package_json: The parsed contents of package.json
-
    :param path: Path to the directory containing package.json
    :raises MissingPackageError: if package.json cannot be loaded
    """
 
    package_type = 'NPM'
+
+   package_json: dict[str, Any]
+   """The parsed contents of ``package.json``."""
 
    def __init__(self, path: PathSelector):
       pkg_json = path.to_absolute('package.json')

@@ -1,8 +1,20 @@
+<a id="module-license_mole.pathselector"></a>
+
+<a id="license-mole-pathselector-module"></a>
+
 # license_mole.pathselector module
 
 A class to refer to files across a set of repositories.
 
 Copyright (c) 2025 Posit Software, PBC
+
+<a id="license_mole.pathselector.NULLPATH"></a>
+
+### license_mole.pathselector.NULLPATH *= ('', 'null://')*
+
+A special PathSelector that uniquely represents the absence of a file.
+
+<a id="license_mole.pathselector.PathSelector"></a>
 
 ### *class* license_mole.pathselector.PathSelector(repo: str, path: str)
 
@@ -10,17 +22,38 @@ Bases: `NamedTuple`
 
 A resolved group root selector.
 
-* **Variables:**
-  * **repo** – The environment variable used to find the repository
-  * **path** – The absolute path to the selected path in the repository
+<a id="license_mole.pathselector.PathSelector.parse"></a>
+
+#### *static* parse(value: str | Iterable[str]) → [PathSelector](#license_mole.pathselector.PathSelector)
+
+Parse a value (perhaps from a config file) into a PathSelector.
+
+* **Parameters:**
+  **value** – A serialized representation of a path selector
+* **Raises:**
+  **TypeError** – if the value cannot be converted to a PathSelector
+* **Returns:**
+  The path selector
+
+<a id="license_mole.pathselector.PathSelector.path"></a>
 
 #### path *: str*
 
-Alias for field number 1
+The absolute path to the selected path in the repository.
+
+<a id="license_mole.pathselector.PathSelector.repo"></a>
 
 #### repo *: str*
 
-Alias for field number 0
+The environment variable used to find the repository.
+
+There are three special cases:
+
+* `''`: An empty string refers to the root project repository.
+* `@`: Refers to a file contained within an installed package.
+* [`RUST_VENDOR`](license_mole.config.md#license_mole.config.RUST_VENDOR): Refers to a file contained within the Rust package cache.
+
+<a id="license_mole.pathselector.PathSelector.simplified"></a>
 
 #### *property* simplified *: str | list[str]*
 
@@ -28,6 +61,8 @@ A simplified form of the selector.
 
 Paths in the default repo are returned as a string.
 Paths in an alternate repo are returned as a list.
+
+<a id="license_mole.pathselector.PathSelector.to_absolute"></a>
 
 #### to_absolute(path: str = '.') → str
 
@@ -43,6 +78,8 @@ Paths are interpreted relative to the selected path.
 * **Returns:**
   An absolute path
 
+<a id="license_mole.pathselector.PathSelector.to_relative"></a>
+
 #### to_relative(path: str) → str
 
 Return the relative path to a file in the repository.
@@ -54,6 +91,8 @@ The returned paths is relative to the repository root.
   **path** – An absolute path
 * **Returns:**
   A relative path
+
+<a id="license_mole.pathselector.PathSelector.to_selector"></a>
 
 #### to_selector(path: str) → [PathSelector](#license_mole.pathselector.PathSelector)
 

@@ -1,14 +1,22 @@
+<a id="module-license_mole.configfile"></a>
+
+<a id="license-mole-configfile-module"></a>
+
 # license_mole.configfile module
 
 Recursive configuration file handling.
 
 Copyright (c) 2025 Posit Software, PBC
 
+<a id="license_mole.configfile.ConfigFile"></a>
+
 ### *class* license_mole.configfile.ConfigFile(path: str | None, data: dict[str, Any] | None = None)
 
 Bases: `object`
 
 Wrapper around a recursive dictionary.
+
+<a id="license_mole.configfile.ConfigFile.group"></a>
 
 #### group(key: str) → [ConfigFile](#license_mole.configfile.ConfigFile)
 
@@ -25,12 +33,16 @@ If the key does not exist, an empty [`ConfigFile`](#license_mole.configfile.Conf
 * **Returns:**
   The contents of the named group.
 
+<a id="license_mole.configfile.ConfigFile.keys"></a>
+
 #### keys() → KeysView[str]
 
 Return the list of keys in the current group.
 
 * **Returns:**
   The list of keys
+
+<a id="license_mole.configfile.ConfigFile.relative_path"></a>
 
 #### relative_path(path: str) → str
 
@@ -42,6 +54,8 @@ If the path is absolute, it is returned unmodified.
   **path** – The relative path to resolve
 * **Returns:**
   An absolute path
+
+<a id="license_mole.configfile.ConfigFile.required_group"></a>
 
 #### required_group(key: str) → [ConfigFile](#license_mole.configfile.ConfigFile)
 
@@ -56,6 +70,8 @@ the group is not defined.
   **KeyError** – if the key is not defined.
 * **Returns:**
   The contents of the named group.
+
+<a id="license_mole.configfile.ConfigFile.value"></a>
 
 #### value(key: str, default: Any = None) → Any
 

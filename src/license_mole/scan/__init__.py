@@ -21,21 +21,18 @@ SCANNERS: dict[str, 'type[BaseScanner]'] = {}
 class BaseScanner:
    """Abstract base class for package scanners.
 
-   :ivar group: The name of the package group populated by this scanner
-   :ivar packages: The packages collected by this scanner
-   :ivar cache_data: Data loaded from the cache, to be used to ensure stable
-      results across runs
-   :cvar package_type: A descriptive label for the type of packages found by
-      this scanner
-
    :param name: The name for a group of packages
    """
 
    package_type = ''
+   """A descriptive label for the type of packages found by this scanner."""
 
    group: str
+   """The name of the package group populated by this scanner."""
    packages: dict[str, BasePackage]
+   """The packages collected by this scanner."""
    cache_data: dict[str, Any]
+   """Data loaded from the cache, to be used to ensure stable results across runs."""
 
    def __init__(self, name: str):
       self.group = name

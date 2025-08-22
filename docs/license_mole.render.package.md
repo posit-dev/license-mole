@@ -1,8 +1,14 @@
+<a id="module-license_mole.render.package"></a>
+
+<a id="license-mole-render-package-module"></a>
+
 # license_mole.render.package module
 
 Functions to represent information about how components should be rendered.
 
 Copyright (c) 2025 Posit Software, PBC
+
+<a id="license_mole.render.package.RenderPackage"></a>
 
 ### *class* license_mole.render.package.RenderPackage(source: [BasePackage](license_mole.scan.package.md#license_mole.scan.package.BasePackage) | dict[str, Any], group: str)
 
@@ -20,6 +26,8 @@ It can output a dictionary suitable for storing in a JSON cache.
   * **source** – The package to render
   * **group** – The functional group containing the package
 
+<a id="license_mole.render.package.RenderPackage.comparison_key"></a>
+
 #### comparison_key() → tuple[str | int, ...]
 
 Produce a comparison key for sorting packages.
@@ -31,6 +39,8 @@ The resulting sort order is:
 * **Returns:**
   A comparison key
 
+<a id="license_mole.render.package.RenderPackage.merge"></a>
+
 #### merge(other: [RenderPackage](#license_mole.render.package.RenderPackage))
 
 Combine another RenderPackage into this one.
@@ -39,6 +49,8 @@ Combine another RenderPackage into this one.
   **other** – The package to be combined
 * **Raises:**
   **ValueError** – if the package to be merged is incompatible
+
+<a id="license_mole.render.package.RenderPackage.render"></a>
 
 #### render(fmt: [FormatDict](license_mole.config_format.md#license_mole.config_format.FormatDict), show_versions: list[str]) → str
 
@@ -49,6 +61,8 @@ Render a one-line package summary in Markdown.
   * **show_versions** – A list of version numbers to display
 * **Returns:**
   Markdown-formatted text
+
+<a id="license_mole.render.package.RenderPackage.render_long"></a>
 
 #### render_long(fmt: [FormatDict](license_mole.config_format.md#license_mole.config_format.FormatDict), show_versions: list[str], context: [LicenseContext](license_mole.render.context.md#license_mole.render.context.LicenseContext)) → str
 
@@ -61,6 +75,8 @@ Render full attribution and licensing in Markdown to stdout.
 * **Returns:**
   A block of Markdown text
 
+<a id="license_mole.render.package.RenderPackage.to_dict"></a>
+
 #### to_dict() → dict[str, Any]
 
 Serialize this object.
@@ -68,9 +84,13 @@ Serialize this object.
 * **Returns:**
   A dictionary suitable for serialization
 
+<a id="license_mole.render.package.RenderPackage.unversioned"></a>
+
 #### *property* unversioned *: str*
 
 The package key with version removed.
+
+<a id="license_mole.render.package.attribution_comparison_key"></a>
 
 ### license_mole.render.package.attribution_comparison_key(attrs: list[str]) → tuple[str, ...]
 
@@ -84,6 +104,8 @@ authors, but copyright dates may have different years.
 * **Returns:**
   An attribution comparison key
 
+<a id="license_mole.render.package.normalize_ltype"></a>
+
 ### license_mole.render.package.normalize_ltype(ltype: str) → str
 
 Normalize a license type for rendering comparison.
@@ -95,6 +117,8 @@ It does unify “LLVM Exception” and “LLVM Exceptions”.
   **ltype** – The license type
 * **Returns:**
   Normalized license type
+
+<a id="license_mole.render.package.populate_template"></a>
 
 ### license_mole.render.package.populate_template(fmt: [FormatDict](license_mole.config_format.md#license_mole.config_format.FormatDict), template_key: str, args: dict[str, str], underline_key: str = 'underline') → str
 

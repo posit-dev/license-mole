@@ -3,7 +3,7 @@
 
 Copyright (c) 2025 Posit Software, PBC
 
-By convention, the name `ltype` is used to refer to an SPDX-style license
+By convention, the name ``ltype`` is used to refer to an SPDX-style license
 identifier across the codebase.
 """
 

@@ -1,3 +1,7 @@
+<a id="module-license_mole"></a>
+
+<a id="license-mole-package"></a>
+
 # license_mole package
 
 license-mole - Functions for detecting and identifying open-source licenses.
@@ -90,6 +94,7 @@ This \_\_init_\_ module sets up package-level globals.
       * [`VersionGroup.render_long()`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.render_long)
       * [`VersionGroup.render_summary()`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.render_summary)
       * [`VersionGroup.representative`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.representative)
+      * [`VersionGroup.sort_key`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.sort_key)
       * [`VersionGroup.url`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.url)
 * [license_mole.scan package](license_mole.scan.md)
   * [`BaseScanner`](license_mole.scan.md#license_mole.scan.BaseScanner)
@@ -135,6 +140,7 @@ This \_\_init_\_ module sets up package-level globals.
     * [`NpmPackage`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage)
       * [`NpmPackage.dependencies`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.dependencies)
       * [`NpmPackage.key`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.key)
+      * [`NpmPackage.package_json`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.package_json)
       * [`NpmPackage.package_type`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.package_type)
       * [`NpmPackage.serialize()`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.serialize)
       * [`NpmPackage.url`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.url)
@@ -153,10 +159,13 @@ This \_\_init_\_ module sets up package-level globals.
       * [`BasePackage.key`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.key)
       * [`BasePackage.licenses`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.licenses)
       * [`BasePackage.name`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.name)
+      * [`BasePackage.package_type`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.package_type)
       * [`BasePackage.path`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.path)
       * [`BasePackage.serialize()`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.serialize)
       * [`BasePackage.url`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.url)
       * [`BasePackage.version`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.version)
+      * [`BasePackage.version_tuple`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.version_tuple)
+    * [`version_tuple()`](license_mole.scan.package.md#license_mole.scan.package.version_tuple)
   * [license_mole.scan.python module](license_mole.scan.python.md)
     * [`PythonPackage`](license_mole.scan.python.md#license_mole.scan.python.PythonPackage)
       * [`PythonPackage.key`](license_mole.scan.python.md#license_mole.scan.python.PythonPackage.key)
@@ -188,6 +197,8 @@ This \_\_init_\_ module sets up package-level globals.
 
 * [license_mole.cache module](license_mole.cache.md)
   * [`BaseCache`](license_mole.cache.md#license_mole.cache.BaseCache)
+    * [`BaseCache.auto_save`](license_mole.cache.md#license_mole.cache.BaseCache.auto_save)
+    * [`BaseCache.cache_path`](license_mole.cache.md#license_mole.cache.BaseCache.cache_path)
     * [`BaseCache.get()`](license_mole.cache.md#license_mole.cache.BaseCache.get)
     * [`BaseCache.items()`](license_mole.cache.md#license_mole.cache.BaseCache.items)
     * [`BaseCache.load()`](license_mole.cache.md#license_mole.cache.BaseCache.load)
@@ -208,6 +219,7 @@ This \_\_init_\_ module sets up package-level globals.
     * [`OverrideDict.permit_license_change`](license_mole.config.md#license_mole.config.OverrideDict.permit_license_change)
     * [`OverrideDict.rename`](license_mole.config.md#license_mole.config.OverrideDict.rename)
     * [`OverrideDict.url`](license_mole.config.md#license_mole.config.OverrideDict.url)
+  * [`RUST_VENDOR`](license_mole.config.md#license_mole.config.RUST_VENDOR)
   * [`get_file_overrides()`](license_mole.config.md#license_mole.config.get_file_overrides)
   * [`get_overrides()`](license_mole.config.md#license_mole.config.get_overrides)
   * [`load_config()`](license_mole.config.md#license_mole.config.load_config)
@@ -267,7 +279,9 @@ This \_\_init_\_ module sets up package-level globals.
   * [`md_link()`](license_mole.markdown.md#license_mole.markdown.md_link)
   * [`strip_markdown()`](license_mole.markdown.md#license_mole.markdown.strip_markdown)
 * [license_mole.pathselector module](license_mole.pathselector.md)
+  * [`NULLPATH`](license_mole.pathselector.md#license_mole.pathselector.NULLPATH)
   * [`PathSelector`](license_mole.pathselector.md#license_mole.pathselector.PathSelector)
+    * [`PathSelector.parse()`](license_mole.pathselector.md#license_mole.pathselector.PathSelector.parse)
     * [`PathSelector.path`](license_mole.pathselector.md#license_mole.pathselector.PathSelector.path)
     * [`PathSelector.repo`](license_mole.pathselector.md#license_mole.pathselector.PathSelector.repo)
     * [`PathSelector.simplified`](license_mole.pathselector.md#license_mole.pathselector.PathSelector.simplified)

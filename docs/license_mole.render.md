@@ -1,8 +1,14 @@
+<a id="module-license_mole.render"></a>
+
+<a id="license-mole-render-package"></a>
+
 # license_mole.render package
 
 Functions for compiling and rendering notice files.
 
 Copyright (c) 2025 Posit Software, PBC
+
+<a id="license_mole.render.NoticeRenderer"></a>
 
 ### *class* license_mole.render.NoticeRenderer(output: [DocumentDict](license_mole.config_format.md#license_mole.config_format.DocumentDict), groups: list[[RenderGroup](#license_mole.render.RenderGroup)])
 
@@ -14,12 +20,16 @@ A class to render the licensing information for a group of packages.
   * **output** – Description of the document to be generated
   * **groups** – The RenderGroups to be included
 
+<a id="license_mole.render.NoticeRenderer.write"></a>
+
 #### write(path: str)
 
 Render the notice document to disk.
 
 * **Parameters:**
   **path** – The destination path
+
+<a id="license_mole.render.RenderGroup"></a>
 
 ### *class* license_mole.render.RenderGroup(group_name: str, packages: list[[BasePackage](license_mole.scan.package.md#license_mole.scan.package.BasePackage)] | list[dict[str, Any]])
 
@@ -34,6 +44,8 @@ the Markdown template file.
   * **group_name** – The name of the functional group.
   * **packages** – The packages in the group.
 
+<a id="license_mole.render.RenderGroup.render_summary"></a>
+
 #### render_summary(fmt: [FormatDict](license_mole.config_format.md#license_mole.config_format.FormatDict), context: [LicenseContext](license_mole.render.context.md#license_mole.render.context.LicenseContext)) → list[str]
 
 Render the summary for each package in the group.
@@ -43,6 +55,8 @@ Render the summary for each package in the group.
   * **context** – An object containing shared information
 * **Returns:**
   A list of Markdown texts
+
+<a id="license_mole.render.RenderGroup.to_dict"></a>
 
 #### to_dict() → list[dict[str, Any]]
 
@@ -84,4 +98,5 @@ Serialize the group.
     * [`VersionGroup.render_long()`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.render_long)
     * [`VersionGroup.render_summary()`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.render_summary)
     * [`VersionGroup.representative`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.representative)
+    * [`VersionGroup.sort_key`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.sort_key)
     * [`VersionGroup.url`](license_mole.render.versiongroup.md#license_mole.render.versiongroup.VersionGroup.url)

@@ -29,7 +29,7 @@ def get_standard_license_text(spdx: str) -> str:
    ISC, BSD, or MIT will include copyright attribution in their license files.
 
    :param spdx: The SPDX identifier of the license, or a reference returned by
-      py:func:`get_standard_license_reference`.
+      :py:func:`get_standard_license_reference`.
    :return: The text of the license.
    """
    spdx = spdx.replace('spdx://', '')

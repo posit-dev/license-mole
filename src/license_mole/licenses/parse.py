@@ -3,7 +3,7 @@
 
 Copyright (c) 2025 Posit Software, PBC
 
-By convention, the name `ltype` is used to refer to an SPDX-style license
+By convention, the name ``ltype`` is used to refer to an SPDX-style license
 identifier across the codebase.
 """
 
@@ -19,8 +19,6 @@ from ..cache import download_file_cached
 from ..config import get_file_overrides
 from ..repo import find_file_in_repo
 from . import resources
-
-# from .override import get_file_overrides
 
 # Clauses that indicate the end of a copyright attribution
 SPLIT_CLAUSES = [
@@ -145,30 +143,28 @@ MULTI_NEWLINE = re.compile('\n{2,}')  # noqa: RUF039
 
 
 class LicenseInfo(TypedDict):
-   """Heuristic description of a license file.
-
-   :ivar author: The author passed into this function
-   :ivar path: The path passed into this function
-   :ivar attribution: Detected copyright attribution lines
-   :ivar spdx: Unambiguously-detected SPDX identifiers
-   :ivar guess: Heuristically-inferred SPDX identifier, if any
-   :ivar checksum: The checksum of the normalized license text
-   :ivar multi: File has multiple detected licenses inside
-   :ivar clean: File can be reused for other packages
-   """
+   """Heuristic description of a license file."""
 
    author: Optional[str]
+   """The author passed into this function"""
    path: str
+   """The path passed into this function"""
    attribution: list[str]
+   """Detected copyright attribution lines"""
    spdx: tuple[str, ...]
+   """Unambiguously-detected SPDX identifiers"""
    guess: Optional[str]
+   """Heuristically-inferred SPDX identifier, if any"""
    checksum: str
+   """The checksum of the normalized license text"""
    multi: bool
+   """File has multiple detected licenses inside"""
    clean: bool
+   """File can be reused for other packages"""
 
 
 # A cache to speed up analysis of already-examined files
-ANALYZE_CACHE: dict[str, LicenseInfo] = {}
+_ANALYZE_CACHE: dict[str, LicenseInfo] = {}
 
 
 def normalize_license_code(ltype: str) -> tuple[str, ...]:
@@ -437,8 +433,8 @@ def analyze_license_file(path: str, author: Optional[str] = '', ignore_uncertain
    :raises ValueError: if the file contains no license text
    :return: License file description
    """
-   if path in ANALYZE_CACHE:
-      return ANALYZE_CACHE[path]
+   if path in _ANALYZE_CACHE:
+      return _ANALYZE_CACHE[path]
 
    license_info: LicenseInfo = {
       'author': author,
@@ -483,5 +479,5 @@ def analyze_license_file(path: str, author: Optional[str] = '', ignore_uncertain
       or get_readme_attribution(os.path.dirname(path))
    )
 
-   ANALYZE_CACHE[path] = license_info
+   _ANALYZE_CACHE[path] = license_info
    return license_info

@@ -1,11 +1,17 @@
+<a id="module-license_mole.licenses"></a>
+
+<a id="license-mole-licenses-package"></a>
+
 # license_mole.licenses package
 
 Functions for locating license files.
 
 Copyright (c) 2025 Posit Software, PBC
 
-By convention, the name ltype is used to refer to an SPDX-style license
+By convention, the name `ltype` is used to refer to an SPDX-style license
 identifier across the codebase.
+
+<a id="license_mole.licenses.LicenseRegistry"></a>
 
 ### *class* license_mole.licenses.LicenseRegistry
 
@@ -17,17 +23,21 @@ This class is used for heuristically comparing license texts to each other
 to determine if they refer to the same license, and for providing a path
 to a license file if only a license identifier is known.
 
+<a id="license_mole.licenses.LicenseRegistry.add"></a>
+
 #### add(ltype: str, license_info: [LicenseInfo](license_mole.licenses.parse.md#license_mole.licenses.parse.LicenseInfo), source_pkg: str)
 
 Add a license to the registry.
 
 * **Parameters:**
   * **ltype** – License identifier
-  * **license_info** – Output of analyze_license_file
+  * **license_info** – Output of `analyze_license_file`
   * **source_pkg** – Package identifier containing license file
 * **Raises:**
   [**LicenseConflictError**](license_mole.errors.md#license_mole.errors.LicenseConflictError) – if the license file is already known under a
   different license identifier.
+
+<a id="license_mole.licenses.LicenseRegistry.get_file_for_type"></a>
 
 #### get_file_for_type(ltype: str, attribution: list[str] | None = None) → str | None
 
@@ -44,6 +54,8 @@ package with the same license.
 * **Returns:**
   Path to the license file, if known
 
+<a id="license_mole.licenses.LicenseRegistry.get_source_for_checksum"></a>
+
 #### get_source_for_checksum(cs: str) → tuple[str, str] | None
 
 Return a source tuple identifying where a license file was first seen.
@@ -53,6 +65,8 @@ Return a source tuple identifying where a license file was first seen.
 * **Returns:**
   Package and file containing license, if known
 
+<a id="license_mole.licenses.LicenseRegistry.get_type_by_checksum"></a>
+
 #### get_type_by_checksum(cs: str) → str | None
 
 Return the license identifier registered for a license file.
@@ -61,6 +75,8 @@ Return the license identifier registered for a license file.
   **cs** – The checksum of the normalized license file contents
 * **Returns:**
   The license identifier, if known
+
+<a id="license_mole.licenses.find_license_files"></a>
 
 ### license_mole.licenses.find_license_files(path: str) → list[str]
 
@@ -78,6 +94,8 @@ source code files are not license information and should not be returned.
 * **Returns:**
   List of detected license files
 
+<a id="license_mole.licenses.normalize_ltype_for_comparison"></a>
+
 ### license_mole.licenses.normalize_ltype_for_comparison(ltype: str) → str
 
 Normalize an ltype into a form suitable for comparison.
@@ -90,12 +108,14 @@ but for comparisons we convert license identifiers into a normalized form.
 * **Returns:**
   Normalized license identifier
 
+<a id="license_mole.licenses.scan_repo_for_license"></a>
+
 ### license_mole.licenses.scan_repo_for_license(repo_url: str) → str
 
 Check a source code repository for a license file.
 
 The license file is downloaded if it is found, so a subsequent call to
-download_file_cached is guaranteed to find it in the cache.
+`download_file_cached` is guaranteed to find it in the cache.
 
 * **Parameters:**
   **repo_url** – URL to the source code repository

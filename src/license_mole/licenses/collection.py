@@ -32,17 +32,18 @@ def normalize_license_url(url: str) -> str:
 class LicenseCollection:
    """A collection of licenses for a package.
 
-   :ivar links: Mapping from normalized license identifier to file paths
-   :ivar files: Mapping from file paths to license descriptions.
-      See `analyze_license_file` for details.
-
    :param package: The package identifier (see BasePackage.key)
    :param base_path: The directory containing the package
    :param author: The author of the package, if known
    """
 
    links: dict[str, str]
+   """Mapping from normalized license identifier to file paths"""
    files: dict[str, LicenseInfo]
+   """Mapping from file paths to license descriptions.
+
+   See :py:func:`analyze_license_file` for details.
+   """
 
    def __init__(self, package: str, base_path: str, author: Optional[str] = None):
       self.package = package

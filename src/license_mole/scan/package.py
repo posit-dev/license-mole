@@ -72,13 +72,7 @@ class BasePackage:
 
    The constructor scans the package directory for license files.
 
-   Subclasses should be careful to honor values found in self._overrides.
-
-   :ivar name: Human-readable name of the package
-   :ivar path: Path to the root of the package
-   :ivar version: The version of the package
-   :ivar licenses: Information about detected licenses
-   :ivar ignored: If True, completely ignore this package.
+   Subclasses should be careful to honor values found in py:attr:`self._overrides`.
 
    :param name: The display name of the package
    :param path: The path containing the package's files
@@ -87,11 +81,21 @@ class BasePackage:
    :param scan: If False, disables automatic scanning for license files
    """
 
+   package_type: str
+   """Label for rendering what kind of package this is."""
    name: str
+   """Human-readable name of the package."""
    path: PathSelector
+   """Path to the root of the package."""
    version: Optional[str]
+   """The version of the package."""
    licenses: LicenseCollection
+   """Information about detected licenses."""
    ignored: bool
+   """If True, completely ignore this package.
+
+   Scanners may choose to look for transitive dependencies in ignored packages.
+   """
 
    def __init__(self, name: str, path: PathSelector, version: str = '', author: str = '', scan: bool = True):
       self._populate(name, path, version, author)

@@ -1,8 +1,14 @@
+<a id="module-license_mole.scan"></a>
+
+<a id="license-mole-scan-package"></a>
+
 # license_mole.scan package
 
 Functions for analyzing and validating license information on packages.
 
 Copyright (c) 2025 Posit Software, PBC
+
+<a id="license_mole.scan.BaseScanner"></a>
 
 ### *class* license_mole.scan.BaseScanner(name: str)
 
@@ -10,17 +16,16 @@ Bases: `object`
 
 Abstract base class for package scanners.
 
-* **Variables:**
-  * **group** – The name of the package group populated by this scanner
-  * **packages** – The packages collected by this scanner
-  * **cache_data** – Data loaded from the cache, to be used to ensure stable
-    results across runs
-  * **package_type** – A descriptive label for the type of packages found by
-    this scanner
 * **Parameters:**
   **name** – The name for a group of packages
 
+<a id="license_mole.scan.BaseScanner.cache_data"></a>
+
 #### cache_data *: dict[str, Any]*
+
+Data loaded from the cache, to be used to ensure stable results across runs.
+
+<a id="license_mole.scan.BaseScanner.compare_cache"></a>
 
 #### compare_cache(cache: dict[str, Any], paths: list[[PathSelector](license_mole.pathselector.md#license_mole.pathselector.PathSelector)]) → bool
 
@@ -37,12 +42,14 @@ The default implementation returns False.
 * **Returns:**
   True if the cached data is up-to-date
 
+<a id="license_mole.scan.BaseScanner.deserialize_cache"></a>
+
 #### deserialize_cache(cache: dict[str, Any], selector: [PathSelector](license_mole.pathselector.md#license_mole.pathselector.PathSelector))
 
 Populate the scanner with cached data.
 
 If cached data is present, this function will be called even if the
-compare_cache function returns False and even if a complete scan
+[`compare_cache`](#license_mole.scan.BaseScanner.compare_cache) function returns False and even if a complete scan
 is forced. Implementations may use this information to ensure stable
 outputs across runs.
 
@@ -52,11 +59,25 @@ The default implementation does nothing.
   * **cache** – The serialized data from the cache
   * **selector** – The selector that paths are relative to
 
+<a id="license_mole.scan.BaseScanner.group"></a>
+
 #### group *: str*
+
+The name of the package group populated by this scanner.
+
+<a id="license_mole.scan.BaseScanner.package_type"></a>
 
 #### package_type *= ''*
 
+A descriptive label for the type of packages found by this scanner.
+
+<a id="license_mole.scan.BaseScanner.packages"></a>
+
 #### packages *: dict[str, [BasePackage](license_mole.scan.package.md#license_mole.scan.package.BasePackage)]*
+
+The packages collected by this scanner.
+
+<a id="license_mole.scan.BaseScanner.scan"></a>
 
 #### scan(path: [PathSelector](license_mole.pathselector.md#license_mole.pathselector.PathSelector))
 
@@ -67,6 +88,8 @@ The definition of a “project root” may vary by scanner.
 
 * **Parameters:**
   **path** – A project root directory
+
+<a id="license_mole.scan.BaseScanner.serialize_cache"></a>
 
 #### serialize_cache(selector: [PathSelector](license_mole.pathselector.md#license_mole.pathselector.PathSelector)) → dict[str, Any] | None
 
@@ -83,6 +106,8 @@ The default implementation returns None, which disables caching.
 * **Returns:**
   A dict suitable for JSON serialization
 
+<a id="license_mole.scan.check_cache"></a>
+
 ### license_mole.scan.check_cache(scanner_class: type[[BaseScanner](#license_mole.scan.BaseScanner)], groups_to_scan: dict[str, list[[PathSelector](license_mole.pathselector.md#license_mole.pathselector.PathSelector)]]) → bool
 
 Look for package updates that might require rendering.
@@ -93,6 +118,8 @@ Look for package updates that might require rendering.
 * **Returns:**
   True if the cache is up-to-date
 
+<a id="license_mole.scan.detect_licenses"></a>
+
 ### license_mole.scan.detect_licenses(pkgs: list[[BasePackage](license_mole.scan.package.md#license_mole.scan.package.BasePackage)]) → list[[BasePackage](license_mole.scan.package.md#license_mole.scan.package.BasePackage)]
 
 Run analysis passes to detect licensing information for packages.
@@ -102,12 +129,16 @@ Run analysis passes to detect licensing information for packages.
 * **Returns:**
   Packages that could not be fully resolved
 
+<a id="license_mole.scan.get_scanners"></a>
+
 ### license_mole.scan.get_scanners() → dict[str, type[[BaseScanner](#license_mole.scan.BaseScanner)]]
 
 Late-load the scanner classes into SCANNERS.
 
 * **Returns:**
   The scanner dictionary
+
+<a id="license_mole.scan.scan_groups"></a>
 
 ### license_mole.scan.scan_groups(scanner_class: type[[BaseScanner](#license_mole.scan.BaseScanner)], groups_to_scan: dict[str, list[[PathSelector](license_mole.pathselector.md#license_mole.pathselector.PathSelector)]], force: bool = False) → dict[str, dict[str, [BasePackage](license_mole.scan.package.md#license_mole.scan.package.BasePackage)]]
 
@@ -121,6 +152,8 @@ Search a set of paths for packages and their dependencies.
 * **Returns:**
   A dictionary of package groups. Each package group is a dictionary
   mapping package identifiers to a descriptor object.
+
+<a id="license_mole.scan.validate_licenses"></a>
 
 ### license_mole.scan.validate_licenses(pkgs: list[[BasePackage](license_mole.scan.package.md#license_mole.scan.package.BasePackage)])
 
@@ -160,6 +193,7 @@ Validate the licensing on a list of packages and log problems.
   * [`NpmPackage`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage)
     * [`NpmPackage.dependencies`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.dependencies)
     * [`NpmPackage.key`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.key)
+    * [`NpmPackage.package_json`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.package_json)
     * [`NpmPackage.package_type`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.package_type)
     * [`NpmPackage.serialize()`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.serialize)
     * [`NpmPackage.url`](license_mole.scan.npm.md#license_mole.scan.npm.NpmPackage.url)
@@ -178,10 +212,13 @@ Validate the licensing on a list of packages and log problems.
     * [`BasePackage.key`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.key)
     * [`BasePackage.licenses`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.licenses)
     * [`BasePackage.name`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.name)
+    * [`BasePackage.package_type`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.package_type)
     * [`BasePackage.path`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.path)
     * [`BasePackage.serialize()`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.serialize)
     * [`BasePackage.url`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.url)
     * [`BasePackage.version`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.version)
+    * [`BasePackage.version_tuple`](license_mole.scan.package.md#license_mole.scan.package.BasePackage.version_tuple)
+  * [`version_tuple()`](license_mole.scan.package.md#license_mole.scan.package.version_tuple)
 * [license_mole.scan.python module](license_mole.scan.python.md)
   * [`PythonPackage`](license_mole.scan.python.md#license_mole.scan.python.PythonPackage)
     * [`PythonPackage.key`](license_mole.scan.python.md#license_mole.scan.python.PythonPackage.key)

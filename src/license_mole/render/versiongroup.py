@@ -46,6 +46,9 @@ class VersionGroup:
    :raises ValueError: if the package list is empty
    """
 
+   force_versions: bool = False
+   """If True, always render package versions."""
+
    def __init__(self, packages: list[RenderPackage]):
       if not packages:
          raise ValueError('Empty package list')
@@ -167,10 +170,10 @@ class VersionGroup:
 
       :param vgrp: Destination package group
       :param other: Package group to be merged
-      :param exclude: Package keys to omit while merging
+      :param exclude: Package names (not keys) to omit while merging
       """
       for other_pkg in other:
-         if other_pkg.key in exclude or any(other_pkg.key == pkg.key for pkg in vgrp):
+         if other_pkg.name in exclude or any(other_pkg.key == pkg.key for pkg in vgrp):
             # explicitly excluded or already included
             continue
          vgrp.append(other_pkg)
@@ -202,7 +205,7 @@ class VersionGroup:
       :param fmt: Description of the rendering format
       :return: A list of one-line summaries
       """
-      if len(self.version_groups) == 1:
+      if len(self.version_groups) == 1 and not self.force_versions:
          return [self.version_groups[0][0].render(fmt, [])]
       lines = []
       for group in self:
@@ -219,7 +222,7 @@ class VersionGroup:
       """
       lines = []
       for group in self:
-         if len(self.version_groups) > 1:
+         if len(self.version_groups) > 1 or self.force_versions:
             versions = [pkg.version for pkg in group if pkg.version]
          else:
             versions = []

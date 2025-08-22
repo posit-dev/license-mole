@@ -105,7 +105,7 @@ class NoticeRenderer(LicenseContext):
       # Packages to be excluded
       if 'exclude' in output:
          other = NoticeRenderer(OUTPUTS[output['exclude']], groups)
-         self.excluded = self._collect_excluded(other.packages)
+         self.excluded = set(other._included)
 
       for rgrp in groups:
          for pkg in rgrp.packages:
@@ -119,6 +119,7 @@ class NoticeRenderer(LicenseContext):
                new_vgrp = vgrp.clone(self.excluded)
                if new_vgrp:
                   self.packages[vgrp.name] = new_vgrp
+                  vgrp.force_versions = vgrp.name in self.excluded
 
       if 'shared-licenses' in self._used_sections:
          for ltype, usage in sorted(self.license_usage.items()):
@@ -126,17 +127,6 @@ class NoticeRenderer(LicenseContext):
             if len(usage) <= 1 or not clean_path:
                continue
             self.shared_licenses[ltype] = clean_path
-
-   def _collect_excluded(self, groups: dict[str, VersionGroup]) -> set[str]:
-      """Collect packages to be excluded from the rendered output.
-
-      :param groups: The RenderGroups to collect excluded packages from
-      :return: The package keys of the packages to exclude
-      """
-      excluded: set[str] = set()
-      for grp in groups.values():
-         excluded.add(grp.key)
-      return excluded
 
    def _merge(self, vgrp: VersionGroup):
       """Merge a version group into the collection.

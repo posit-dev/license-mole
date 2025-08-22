@@ -15,8 +15,8 @@ from ..pathselector import PathSelector
 from . import BaseScanner
 from .package import BasePackage, VersionKey, version_tuple
 
-ATOM_RE = re.compile(r'^([^ =<>!\[]+)\s*(?:(\[[^\]]+\])?\s*((?:(?:<|<=|>|>=|==|!=)\s*[^<>=\s,]+\s*(?:,|$))*))?\s*$')
-VERSION_RE = re.compile(r'(<|<=|>|>=|==|!=)\s*([^<>=\s]+)$')
+ATOM_RE = re.compile(r'^([^ =<>!\[~]+)\s*(?:(\[[^\]]+\])?\s*((?:(?:<|<=|>|>=|==|!=|~=)\s*[^<>=~\s,]+\s*(?:,|$))*))?\s*$')
+VERSION_RE = re.compile(r'(<|<=|>|>=|==|!=|~=)\s*([^<>=~\s]+)$')
 
 
 class _ParsedAtom(NamedTuple):
@@ -74,6 +74,8 @@ def _make_predicate(op: str, version: str, chain: Callable[[VersionKey], bool]) 
       return lambda v: chain(v) and v <= compare
    elif op == '<':
       return lambda v: chain(v) and v < compare
+   elif op == '~=':
+      return lambda v: chain(v) and v[:len(compare)] == compare
    raise ValueError(f'Unknown predicate {op}')
 
 

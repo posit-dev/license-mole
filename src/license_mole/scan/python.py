@@ -151,7 +151,7 @@ class PythonPackage(BasePackage):
          author=data['info'].get('author', data['info'].get('author_email', '')),
       )
 
-      if 'licenses' not in self._overrides:
+      if 'license' not in self._overrides:
          ltype = data['info'].get('license')
          if ltype:
             self.licenses.add(ltype)

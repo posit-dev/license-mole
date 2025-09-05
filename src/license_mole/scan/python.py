@@ -133,12 +133,14 @@ class PythonPackage(BasePackage):
       if not version:
          version = _select_version(versions)
 
-      project = data['info'].get('project_urls', {})
+      project = data['info'].get('project_urls') or {}
       path = project.get('Source', project.get('Code', ''))
       if not path and 'Homepage' in project:
          path = project['Homepage']
       if not path and 'home_page' in data['info']:
          path = data['info']['home_page']
+      if not path and 'project_url' in data['info']:
+         path = data['info']['project_url']
       if not path:
          path = data['info']['package_url']
 

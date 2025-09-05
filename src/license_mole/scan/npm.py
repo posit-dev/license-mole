@@ -178,9 +178,7 @@ class NpmPackage(BasePackage):
             if isinstance(l, str):
                self.licenses.add(l)
                continue
-            if l['type'] != 'BSD':
-               # don't add unqualified BSD, it's ambiguous
-               self.licenses.add(l['type'])
+            self.licenses.add(l['type'])
             if not self.licenses.files and 'github.com' in l.get('url', ''):
                try:
                   self.licenses.add_file(l['url'])

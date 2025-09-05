@@ -11,6 +11,8 @@ from ..errors import LicenseConflictError
 from . import licenses, normalize_ltype_for_comparison
 from .parse import LicenseInfo, analyze_license_file, get_readme_attribution, normalize_license_code
 
+LABEL_BLACKLIST = ['BSD', 'DUAL-LICENSE']
+
 
 def normalize_license_url(url: str) -> str:
    """Clean up a URL pointing to a license file.
@@ -124,8 +126,13 @@ class LicenseCollection:
          for ltype in normalize_license_code(ltypes):
             if not ltype:
                raise ValueError('Blank license type')
-            self._ltypes.add(ltype)
             normalized = normalize_ltype_for_comparison(ltype)
+            if normalized in LABEL_BLACKLIST:
+               # Labels in the blacklist are ambiguous about which license they
+               # represent. Skipping it here will either detect it from the
+               # license file or force the user to provide an override.
+               continue
+            self._ltypes.add(ltype)
             if not normalized:
                raise ValueError('Blank license type')
             self._normalized.add(normalized)

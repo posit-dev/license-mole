@@ -7,7 +7,7 @@ This __init__ module sets up package-level globals.
 """
 import logging
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 logger = logging.getLogger(__name__)
 

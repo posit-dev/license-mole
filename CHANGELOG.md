@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.1 (2025-09-08)
+
+### Bug Fixes
+
+- Add PSF-2.0
+  ([`3fa6630`](https://github.com/posit-dev/license-mole/commit/3fa6630f1f583766b6088711e0c6fd607f9b15cc))
+
+
 ## v0.2.0 (2025-09-05)
 
 ### Bug Fixes

@@ -478,7 +478,7 @@ class RenderPackage:
       license_text = []
       templates = ['nameless_license', 'named_license', 'multi_license']
       for ltypes, path in license_blocks:
-         license_names = sorted(rl.LICENSE_NAMES[ltype] for ltype in ltypes if ltype in rl.LICENSE_NAMES)
+         license_names = sorted(rl.LICENSE_NAMES.get(ltype, f'{ltype} License') for ltype in ltypes)
          license_text.append(
             populate_template(
                fmt,

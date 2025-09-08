@@ -10,6 +10,7 @@ PACKAGE_TYPES = {
    'npm': ' (npm package)',
    'go': ' (Go package)',
    'rust': ' (Rust package)',
+   'py': ' (Python package)',
 }
 
 LICENSE_SHORT_NAMES = {
@@ -51,6 +52,7 @@ LICENSE_SHORT_NAMES = {
    'POSTGRESQL': 'PostgreSQL',
    'PUBLIC-DOMAIN': 'public domain',
    'PYTHON-2.0': 'Python',
+   'PSF-2.0': 'Python',
    'SQLITE-BLESSING': 'public domain',
    'UNICODE-3.0': 'Unicode v3',
    'UNICODE-DFS-2016': 'Unicode-DFS',
@@ -97,6 +99,7 @@ LICENSE_NAMES = {
    'MPL-2.0': 'Mozilla Public License version 2.0',
    'OFL-1.1': 'SIL Open Font License',
    'POSTGRESQL': 'PostgreSQL License',
+   'PSF-2.0': 'Python Software Foundation License version 2.0',
    'PYTHON-2.0': 'Python License version 2.0',
    'UNICODE-3.0': 'Unicode License v3',
    'UNICODE-DFS-2016': 'Unicode Data Files and Software License Agreement (2016)',

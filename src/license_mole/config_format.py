@@ -64,6 +64,7 @@ class FormatDict(TypedDict, total=False):
 
       * ``%(name)s``: The name of the package.
       * ``%(versions)s``: The version(s) of the package.
+      * ``%(anchor)s``: An anchor linking to the package description.
       * ``%(license)s``: A comma-separated list of short license names.
    """
    shared_license: str
@@ -128,7 +129,7 @@ _default_text_format = FormatDict({
    'package': """
 %(name)s%(versions)s
 %(underline)s
-Website: %(url)s
+Source: %(url)s
 
 %(attribution)s
 %(messages)s

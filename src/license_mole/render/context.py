@@ -14,6 +14,7 @@ class LicenseContext:
 
    license_usage: dict[str, set[str]]
    shared_licenses: dict[str, str]
+   merged_anchors: dict[str, str]
    excluded: set[str]
    format: FormatDict
    markdown: bool
@@ -23,6 +24,8 @@ class LicenseContext:
       self.license_usage = {}
       # licenses that appear in this dict have text shared across packages
       self.shared_licenses = {}
+      # maps child package anchors to merged package anchors
+      self.merged_anchors = {}
       # packages that should be omitted from the document
       self.excluded: set[str] = set()
       self.format = fmt

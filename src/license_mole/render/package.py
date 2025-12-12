@@ -232,6 +232,15 @@ def populate_template(fmt: FormatDict, template_key: str, args: dict[str, str], 
    return template % args
 
 
+class WithRepresentative:
+   """An interface for types that contain a representative RenderPackage."""
+
+   @property
+   def representative(self) -> 'RenderPackage':
+      """Gets the package that represents the group as a whole."""
+      raise NotImplementedError()
+
+
 class RenderPackage:
    """A description of a package for rendering.
 
@@ -250,6 +259,7 @@ class RenderPackage:
       self.group = group
       self.child_packages: list[RenderPackage] = []
       self.ignored = False
+      self.version_groups: list[WithRepresentative] = []
 
       if isinstance(source, dict):
          self.name = source['name']
@@ -382,7 +392,17 @@ class RenderPackage:
       """Construct an anchor attribute for internal links.
 
       :return: An anchor attribute
+      :raises ValueError: if the anchor cannot be uniquely determined
       """
+      if self.version_groups:
+         anchors = set()
+         for vg in self.version_groups:
+            anchor = vg.representative._anchor()
+            if anchor not in anchors:
+               anchors.add(anchor)
+         if len(anchors) != 1:
+            raise ValueError(f'Anchor for {self.key} cannot be uniquely determined')
+         return next(iter(anchors))
       anchor = self.render_name
       attr_key = ','.join(str(x) for x in sorted(list(self.licenses.keys()) + self.attribution))
       attr_key += '::' + self.version
@@ -468,7 +488,7 @@ class RenderPackage:
                logger.warning(f'No license name for "{ltype}"; guessing.')
             lines.append(md_link(
                rl.LICENSE_NAMES.get(ltype, f'{ltype} License'),
-               ltype if use_link else '',
+               f'#{ltype}' if use_link else '',
             ))
          license_messages = fmt['multi_license_lines'] % {
             'licenses': '\n'.join(f'{fmt["multi_license_indent"]}{l}' for l in lines),

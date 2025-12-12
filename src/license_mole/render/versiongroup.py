@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Iterator, Optional, TypedDict, Union
 from ..config_format import FormatDict
 from ..licenses.parse import analyze_license_file
 from ..scan.package import VersionKey, version_tuple
-from .package import RenderPackage, attribution_comparison_key
+from .package import RenderPackage, WithRepresentative, attribution_comparison_key
 
 if TYPE_CHECKING:
    from . import NoticeRenderer
@@ -37,7 +37,7 @@ def _version_compare_keys(pkg: RenderPackage) -> VersionCompareKey:
    }
 
 
-class VersionGroup:
+class VersionGroup(WithRepresentative):
    """A description of multiple versions of a package.
 
    Versions are grouped based on matching licenses and attribution.
@@ -117,6 +117,7 @@ class VersionGroup:
          self._last_compare = new_compare
          self.version_groups.append([])
       self.version_groups[-1].append(pkg)
+      pkg.version_groups.append(self)
 
    def _detect_license_change(
       self,

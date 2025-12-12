@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.2.2 (2025-12-12)
+
+### Bug Fixes
+
+- Multi-license files skipped undefined names, add HPND
+  ([`c14a0b0`](https://github.com/posit-dev/license-mole/commit/c14a0b0fd153150394e854206eda91f2ded25d6d))
+
+- Multi-license links, anchors to package groups
+  ([`de3cd34`](https://github.com/posit-dev/license-mole/commit/de3cd349f1ba92fe100b9478919383a8bc686415))
+
+
 ## v0.2.1 (2025-09-08)
 
 ### Bug Fixes

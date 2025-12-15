@@ -10,7 +10,7 @@ from functools import cached_property
 from typing import Any, Optional, Union, cast
 
 from .. import logger
-from ..config import RELABEL
+from ..config import RELABEL, REPO_URLS
 from ..config_format import FormatDict, UnderlineDescriptor
 from ..errors import HomepageMissingError
 from ..licenses import normalize_ltype_for_comparison
@@ -276,6 +276,11 @@ class RenderPackage:
          self.attribution = source.licenses.attribution
          if 'PROPRIETARY' in source.licenses:
             self.ignored = True
+
+      for path, replacement in REPO_URLS.items():
+         if self.url.startswith(path):
+            self.url = replacement + self.url[len(path):]
+            break
 
       ltypes = _consolidate_variants(list(licenses.keys()))
       self.licenses = {ltype: licenses[ltype] for ltype in ltypes}

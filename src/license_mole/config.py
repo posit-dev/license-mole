@@ -17,6 +17,7 @@ containing mole.toml.
 import glob
 import os
 import re
+from functools import cmp_to_key
 from typing import Any, Literal, TypedDict, Union, cast
 
 from . import cache, logger
@@ -54,6 +55,7 @@ OVERRIDES: dict[str, OverrideDict] = {}
 SPDX_OVERRIDES: dict[str, tuple[str, ...]] = {}
 RELABEL: dict[str, str] = {}
 RUST_GROUP: dict[str, str] = {}
+REPO_URLS: dict[str, str] = {}
 # re-export
 OUTPUTS = _OUTPUTS
 FORMATS = _FORMATS
@@ -81,6 +83,38 @@ def _populate_repos(root: str, repos: ConfigFile):
          REPO_PATHS[env] = default_path
       else:
          REPO_PATHS[env] = os.path.abspath(os.path.join(root, default_path))
+
+
+def _populate_repo_urls(root: str, repo_urls: ConfigFile):
+   """Fill the REPO_URLS dict from the config file.
+
+   :param root: The project root that paths are relative to
+   :param repo_urls: The [repo-urls] section from the config file
+   """
+   urls: dict[str, str] = {}
+   for key in repo_urls.keys():
+      replacement = repo_urls.value(key)
+      if key == '.':
+         urls[root] = replacement
+      elif key in REPO_PATHS:
+         urls[REPO_PATHS[key]] = replacement
+      elif os.path.isabs(key):
+         urls[key] = replacement
+      else:
+         urls[os.path.abspath(key)] = replacement
+
+   def comparator(lhs: str, rhs: str) -> int:
+      if lhs.startswith(rhs):
+         return -1
+      if rhs.startswith(lhs):
+         return 1
+      return 0
+
+   # Sort REPO_PATHS so that more specific paths come first
+   keys = list(urls.keys())
+   keys.sort(key=cmp_to_key(comparator))
+   for key in keys:
+      REPO_URLS[key] = urls[key]
 
 
 def _populate_groups(config: ConfigFile):
@@ -253,6 +287,7 @@ def load_config(path: str):
    root = config.relative_path(config.value('root', '.'))
 
    _populate_repos(root, config.group('repos'))
+   _populate_repo_urls(root, config.group('repo-urls'))
    _populate_groups(config.required_group('groups'))
    _populate_collections(config.group('collections'))
    _populate_overrides(config.group('overrides'))

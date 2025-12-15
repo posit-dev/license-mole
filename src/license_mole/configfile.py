@@ -83,7 +83,7 @@ class ConfigFile:
       """
       if os.path.isabs(path):
          return path
-      return os.path.join(os.path.dirname(self._path), path)
+      return os.path.abspath(os.path.join(os.path.dirname(self._path), path))
 
    def keys(self) -> KeysView[str]:
       """Return the list of keys in the current group.

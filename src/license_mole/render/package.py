@@ -6,6 +6,7 @@ Copyright (c) 2025 Posit Software, PBC
 
 import re
 import zlib
+from functools import cached_property
 from typing import Any, Optional, Union, cast
 
 from .. import logger
@@ -232,15 +233,6 @@ def populate_template(fmt: FormatDict, template_key: str, args: dict[str, str], 
    return template % args
 
 
-class WithRepresentative:
-   """An interface for types that contain a representative RenderPackage."""
-
-   @property
-   def representative(self) -> 'RenderPackage':
-      """Gets the package that represents the group as a whole."""
-      raise NotImplementedError()
-
-
 class RenderPackage:
    """A description of a package for rendering.
 
@@ -259,7 +251,6 @@ class RenderPackage:
       self.group = group
       self.child_packages: list[RenderPackage] = []
       self.ignored = False
-      self.version_groups: list[WithRepresentative] = []
 
       if isinstance(source, dict):
          self.name = source['name']
@@ -388,21 +379,12 @@ class RenderPackage:
       """The package key with version removed."""
       return self.key.split('=')[0]
 
-   def _anchor(self) -> str:
+   @cached_property
+   def anchor(self) -> str:
       """Construct an anchor attribute for internal links.
 
       :return: An anchor attribute
-      :raises ValueError: if the anchor cannot be uniquely determined
       """
-      if self.version_groups:
-         anchors = set()
-         for vg in self.version_groups:
-            anchor = vg.representative._anchor()
-            if anchor not in anchors:
-               anchors.add(anchor)
-         if len(anchors) != 1:
-            raise ValueError(f'Anchor for {self.key} cannot be uniquely determined')
-         return next(iter(anchors))
       anchor = self.render_name
       attr_key = ','.join(str(x) for x in sorted(list(self.licenses.keys()) + self.attribution))
       attr_key += '::' + self.version
@@ -441,7 +423,7 @@ class RenderPackage:
          'toc_line',
          {
             'name': self.render_name,
-            'anchor': self._anchor(),
+            'anchor': self.anchor,
             'type': package_type,
             'licenses': licenses,
             'versions': _format_versions(show_versions),
@@ -518,7 +500,7 @@ class RenderPackage:
             'name': self.render_name,
             'url': self.url,
             'versions': _format_versions(show_versions),
-            'anchor': self._anchor(),
+            'anchor': self.anchor,
             'attribution': '\n'.join((fmt['attribution_line'] % {'message': attr}) for attr in self.attribution),
             'messages': license_messages,
             'license': '\n'.join(license_text),

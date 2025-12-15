@@ -92,9 +92,11 @@ class NoticeRenderer(LicenseContext):
       super().__init__(FORMATS[output['format']])
       self.groups = groups
       self.packages: dict[str, VersionGroup] = {}
+      self._sorted_packages: list[VersionGroup] = []
       self._output = output
       self._sections: dict[str, str] = {}
       self._included: set[str] = set()
+      self._anchors: dict[str, str] = {}
 
       # Identify which groups are used by the template
       with open(self._output['template'], 'r', encoding='utf8') as f:
@@ -142,20 +144,33 @@ class NoticeRenderer(LicenseContext):
          vgrp.merge(existing, self.excluded)
          self.packages[vgrp.name] = vgrp
 
+   def _collect_packages(self):
+      """Organize packages and prepare internal links."""
+      self._sorted_packages = sorted(self.packages.values(), key=lambda g: g.sort_key)
+      for vgrp in self._sorted_packages:
+         if vgrp.key in self.excluded or vgrp.name not in self._included:
+            continue
+         for group in vgrp.version_groups:
+            anchor = group[0].anchor
+            for pkg in group:
+               self._anchors[pkg.key] = anchor
+
    def _render_summaries(self):
       """Collect summaries for each functional group."""
       for rgrp in self.groups:
          if not rgrp.groups:
             self._sections[rgrp.name] = ''
             continue
+         for pkg in rgrp.packages:
+            if pkg.key in self._anchors:
+               pkg.anchor = self._anchors[pkg.key]
          lines = rgrp.render_summary(self.format, self)
          self._sections[rgrp.name] = '\n'.join(lines)
 
    def _render_long(self):
       """Collect long license descriptions for each package."""
       lines = []
-      packages = sorted(self.packages.values(), key=lambda g: g.sort_key)
-      for vgrp in packages:
+      for vgrp in self._sorted_packages:
          if vgrp.key in self.excluded or vgrp.name not in self._included:
             continue
          lines.extend(vgrp.render_long(self.format, self))
@@ -201,6 +216,7 @@ class NoticeRenderer(LicenseContext):
       :param path: The destination path
       """
       logger.info('Rendering %s to %s...', self._output['template'], path)
+      self._collect_packages()
       self._render_summaries()
       self._render_long()
       self._render_licenses()

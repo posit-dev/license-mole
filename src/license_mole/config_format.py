@@ -90,6 +90,7 @@ class FormatDict(TypedDict, total=False):
          Each message is formatted using :py:attr:`message-line`.
       * ``%(license)s``: The full body text of the license.
       * ``%(underline)s``: An underline based on :py:attr:`underline`.
+      * ``%(anchor)s``: An anchor for linking to the package within the page.
    """
    attribution_line: str
    """How to render a line of copyright attribution. This formatted line will

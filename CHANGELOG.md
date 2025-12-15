@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v0.3.0 (2025-12-15)
+
+### Bug Fixes
+
+- Ensure summaries use the same anchors as long descriptions
+  ([`9c9a1a1`](https://github.com/posit-dev/license-mole/commit/9c9a1a1a62894980606178402325561070312dd3))
+
+- Handle Markdown links with <> brackets
+  ([`54480d6`](https://github.com/posit-dev/license-mole/commit/54480d6c0b2225f8f14ff732f6ac252ccffdc796))
+
+- Label links as 'Source' instead of 'Website' for accuracy
+  ([`7cacb61`](https://github.com/posit-dev/license-mole/commit/7cacb610f99220dd9124038de4134298f765222e))
+
+### Features
+
+- Generate web URLs for repo-relative paths
+  ([`75cea75`](https://github.com/posit-dev/license-mole/commit/75cea75d853d6ee750f5c6d897070a8e908dcde8))
+
+
 ## v0.2.2 (2025-12-12)
 
 ### Bug Fixes

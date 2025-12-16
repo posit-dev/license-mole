@@ -2,6 +2,7 @@
 """Project configuration information.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 
 All configuration paths are relative to the directory containing mole.toml.
 

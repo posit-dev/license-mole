@@ -2,6 +2,7 @@
 """Base class for package descriptions.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 from typing import Any, ItemsView, Optional, Self, cast

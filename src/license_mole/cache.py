@@ -2,6 +2,7 @@
 """Functions for managing license-mole's cache files.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import hashlib

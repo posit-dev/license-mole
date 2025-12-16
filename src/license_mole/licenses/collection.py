@@ -2,6 +2,7 @@
 """Functions for managing a collection of licenses for a package.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 from functools import cached_property

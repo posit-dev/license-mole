@@ -2,6 +2,7 @@
 """Recursive configuration file handling.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import os

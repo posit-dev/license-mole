@@ -2,6 +2,7 @@
 """Functions for compiling and rendering notice files.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import re

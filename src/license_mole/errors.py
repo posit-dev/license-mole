@@ -2,6 +2,7 @@
 """Exception classes used across license-mole.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 from typing import Optional

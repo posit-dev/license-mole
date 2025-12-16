@@ -2,6 +2,7 @@
 """Container for shared rendering information.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 from ..config_format import FormatDict

@@ -2,6 +2,7 @@
 """Functions for collecting manual dependency information.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 
 For dependencies that are not managed with a package manager, license-mole
 supports a format in the style of a CMake function. A minimal dependency

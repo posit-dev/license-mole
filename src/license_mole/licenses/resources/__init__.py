@@ -2,6 +2,7 @@
 """Access to predefined license text.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import sys

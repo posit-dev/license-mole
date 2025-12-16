@@ -46,4 +46,6 @@ To generate the documentation files:
 
 Copyright &copy; 2025 Posit Software, PBC
 
+Mole is distributed under the MIT license. See the [LICENSE](LICENSE) file.
+
 Mole wouldn't be successful on its own. See its [open-source dependencies](docs/NOTICE.md).

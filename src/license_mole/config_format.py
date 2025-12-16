@@ -2,6 +2,7 @@
 """Format configuration information.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 # mypy: disable-error-code="literal-required"
 

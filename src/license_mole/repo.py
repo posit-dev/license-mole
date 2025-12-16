@@ -2,6 +2,7 @@
 """Functions for finding source code repositories for packages.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import json

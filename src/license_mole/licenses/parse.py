@@ -2,6 +2,7 @@
 """Functions for heuristically parsing license files.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 
 By convention, the name ``ltype`` is used to refer to an SPDX-style license
 identifier across the codebase.

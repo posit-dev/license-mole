@@ -2,6 +2,7 @@
 """A class to refer to files across a set of repositories.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import os

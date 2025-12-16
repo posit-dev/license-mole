@@ -2,6 +2,7 @@
 """Functions for organizing multiple versions of packages.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 from typing import TYPE_CHECKING, Iterator, Optional, TypedDict, Union

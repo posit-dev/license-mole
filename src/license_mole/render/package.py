@@ -2,6 +2,7 @@
 """Functions to represent information about how components should be rendered.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import re

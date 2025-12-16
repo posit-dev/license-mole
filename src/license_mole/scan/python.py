@@ -2,6 +2,7 @@
 """Functions for collecting Python packages.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import hashlib

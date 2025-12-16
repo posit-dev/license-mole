@@ -3,6 +3,7 @@
 """License scanner for Posit Workbench.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 
 Recursively collects dependendencies and groups them by component.
 Generates NOTICE / NOTICE-SUPPLEMENT Markdown documentation.

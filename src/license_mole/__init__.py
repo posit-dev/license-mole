@@ -2,6 +2,7 @@
 """license-mole - Functions for detecting and identifying open-source licenses.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 
 This __init__ module sets up package-level globals.
 """

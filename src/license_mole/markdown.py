@@ -2,6 +2,7 @@
 """Functions for handling Markdown text.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import re

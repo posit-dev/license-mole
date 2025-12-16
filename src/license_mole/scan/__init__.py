@@ -2,6 +2,7 @@
 """Functions for analyzing and validating license information on packages.
 
 Copyright (c) 2025 Posit Software, PBC
+SPDX-License-Identifier: MIT
 """
 
 import glob

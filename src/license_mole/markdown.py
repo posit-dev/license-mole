@@ -8,14 +8,14 @@ import re
 from dataclasses import dataclass
 from typing import Literal, Union
 
-LINK_PATTERN = re.compile(r'[\[]([^\]]+)[\]]\(<?[^>\)]+>?\)')
+LINK_PATTERN = re.compile(r'[\[]([^\]]+)[\]]\([<]?[^>\)]+[>]?\)')
 BRACKET_ENTITIES = re.compile(r'<([^>]*)>')
 WHITESPACE = re.compile(r'\s')
 BOLD_TAG = re.compile(r'(?<![*])[*]\s*(.+?)\s*[*](?![*])')
 BLOCKQUOTE_PREFIX = re.compile(r'^\s*([>#]\s*)*', re.M)
 TRIPLE_QUOTE_PREFIX = re.compile(r'^(\s*)"""')
 MD_HYPERLINK_WITH_ANGLES = re.compile(r'[\[]([^\]]+)[\]]\((?:<|&lt;)([^>\)]+)(?:>|&gt;)\)')
-UNLINKED_HYPERLINK = re.compile(r'(?<!.\[|]\()(https?://(?:[-A-Za-z0-9#.:/?=~@+%]|&(?!gt;))+)')
+UNLINKED_HYPERLINK = re.compile(r'(?<!.\[|]\()(https?://(?:[-A-Za-z0-9#.:/?=~@+%]|&(?!gt;))+)', re.DOTALL)
 URL_MISSING_SLASHES = re.compile(r'http(s?):([A-Za-z])')
 NUMERIC_LIST_PREFIX = re.compile(r'^\s*(\(?\d+\)|\d+[.])(?=\s)')
 ALPHA_LIST_PREFIX = re.compile(r'^\s*(\(?[a-z]\)|[a-z][.])(?=\s)')

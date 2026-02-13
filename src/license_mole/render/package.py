@@ -484,7 +484,10 @@ class RenderPackage:
          }
 
       license_text = []
-      templates = ['nameless_license', 'named_license', 'multi_license']
+      if fmt.get('license_details_collapsed', False):
+         templates = ['nameless_license_collapsed', 'named_license_collapsed', 'multi_license_collapsed']
+      else:
+         templates = ['nameless_license', 'named_license', 'multi_license']
       for ltypes, path in license_blocks:
          license_names = sorted(rl.LICENSE_NAMES.get(ltype, f'{ltype} License') for ltype in ltypes)
          license_text.append(

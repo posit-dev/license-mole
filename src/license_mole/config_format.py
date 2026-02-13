@@ -116,8 +116,12 @@ class FormatDict(TypedDict, total=False):
    nameless_license: str
    named_license: str
    multi_license: str
+   nameless_license_collapsed: str
+   named_license_collapsed: str
+   multi_license_collapsed: str
    license_indent: str
    license_blockquote: bool
+   license_details_collapsed: bool
 
 
 _default_text_format = FormatDict({
@@ -163,8 +167,27 @@ License text (%(names)s):
 %(underline)s
 %(text)s
 """,
+   'nameless_license_collapsed': """
+
+License text:
+%(underline)s
+%(text)s
+""",
+   'named_license_collapsed': """
+
+%(name)s text:
+%(underline)s
+%(text)s
+""",
+   'multi_license_collapsed': """
+
+License text (%(names)s):
+%(underline)s
+%(text)s
+""",
    'license_indent': '',
    'license_blockquote': False,
+   'license_details_collapsed': False,
 })
 
 _default_markdown_format = FormatDict({
@@ -204,8 +227,30 @@ _default_markdown_format = FormatDict({
 
 %(text)s
 """,
+   'nameless_license_collapsed': """
+<details>
+<summary>**License text** (click to expand)</summary>
+
+%(text)s
+</details>
+""",
+   'named_license_collapsed': """
+<details>
+<summary>**%(name)s text** (click to expand)</summary>
+
+%(text)s
+</details>
+""",
+   'multi_license_collapsed': """
+<details>
+<summary>**License text (%(names)s)** (click to expand)</summary>
+
+%(text)s
+</details>
+""",
    'license_indent': '',
    'license_blockquote': True,
+   'license_details_collapsed': False,
 })
 
 FORMATS: dict[str, 'FormatDict'] = {
@@ -269,9 +314,10 @@ def _load_format_config(name: str, config: ConfigFile) -> FormatDict:
       if key == 'markup' and value not in {'text', 'markdown'}:
          raise KeyError(f'Unknown markup type "{value}" in format {name}')
       if key in fmt:
-         if type(value) is str and type(fmt[key]) is str:
+         # Handle strings and booleans (both have same assignment logic)
+         if type(value) is type(fmt[key]) and type(value) in {str, bool}:
             fmt[key] = value
-         elif isinstance(fmt[key], dict):
+         elif isinstance(value, dict) and isinstance(fmt[key], dict):
             # only dicts right now are UnderlineDescriptor
             if type(value.get('length', -1)) is not int:
                raise TypeError(f'{key}.length expected int')

@@ -116,12 +116,8 @@ class FormatDict(TypedDict, total=False):
    nameless_license: str
    named_license: str
    multi_license: str
-   nameless_license_collapsed: str
-   named_license_collapsed: str
-   multi_license_collapsed: str
    license_indent: str
    license_blockquote: bool
-   license_details_collapsed: bool
 
 
 _default_text_format = FormatDict({
@@ -167,27 +163,8 @@ License text (%(names)s):
 %(underline)s
 %(text)s
 """,
-   'nameless_license_collapsed': """
-
-License text:
-%(underline)s
-%(text)s
-""",
-   'named_license_collapsed': """
-
-%(name)s text:
-%(underline)s
-%(text)s
-""",
-   'multi_license_collapsed': """
-
-License text (%(names)s):
-%(underline)s
-%(text)s
-""",
    'license_indent': '',
    'license_blockquote': False,
-   'license_details_collapsed': False,
 })
 
 _default_markdown_format = FormatDict({
@@ -229,33 +206,31 @@ _default_markdown_format = FormatDict({
 """,
    'license_indent': '',
    'license_blockquote': True,
-   'license_details_collapsed': False,
 })
 
 _default_markdown_collapsible_format = FormatDict({
    **_default_markdown_format,
-   'nameless_license_collapsed': """
+   'nameless_license': """
 <details>
 <summary>**License text** (click to expand)</summary>
 
 %(text)s
 </details>
 """,
-   'named_license_collapsed': """
+   'named_license': """
 <details>
 <summary>**%(name)s text** (click to expand)</summary>
 
 %(text)s
 </details>
 """,
-   'multi_license_collapsed': """
+   'multi_license': """
 <details>
 <summary>**License text (%(names)s)** (click to expand)</summary>
 
 %(text)s
 </details>
 """,
-   'license_details_collapsed': True,
 })
 
 FORMATS: dict[str, 'FormatDict'] = {

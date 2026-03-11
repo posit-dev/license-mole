@@ -227,6 +227,13 @@ _default_markdown_format = FormatDict({
 
 %(text)s
 """,
+   'license_indent': '',
+   'license_blockquote': True,
+   'license_details_collapsed': False,
+})
+
+_default_markdown_collapsible_format = FormatDict({
+   **_default_markdown_format,
    'nameless_license_collapsed': """
 <details>
 <summary>**License text** (click to expand)</summary>
@@ -248,14 +255,13 @@ _default_markdown_format = FormatDict({
 %(text)s
 </details>
 """,
-   'license_indent': '',
-   'license_blockquote': True,
-   'license_details_collapsed': False,
+   'license_details_collapsed': True,
 })
 
 FORMATS: dict[str, 'FormatDict'] = {
    'text': _default_text_format,
    'markdown': _default_markdown_format,
+   'markdown_collapsible': _default_markdown_collapsible_format,
 }
 
 

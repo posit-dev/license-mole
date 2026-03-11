@@ -7,3 +7,5 @@ docs/source/license_mole.*.rst
 .mypy_cache
 .ruff_cache
 dist
+.vscode
+

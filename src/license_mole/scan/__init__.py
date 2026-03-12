@@ -253,7 +253,7 @@ def _first_pass(dep: BasePackage) -> bool:
    :param dep: Package to analyze
    :return: Whether the package's licensing is fully resolved
    """
-   if dep.licenses.is_empty():
+   if dep.licenses.is_empty() and 'license_files' not in dep._overrides:
       logger.debug('Scanning %s for license information...', getattr(dep, 'repo', dep.url))
       path = scan_repo_for_license(dep.url)
       if path:

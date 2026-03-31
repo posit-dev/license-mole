@@ -264,7 +264,7 @@ class RustScanner(BaseScanner):
             'DEPNAME': 'Rust standard libraries',
             'REPOSITORY': 'https://github.com/rust-lang/rust',
             'LICENSE': 'Apache-2.0 OR MIT',
-            'LICENSE_PATH': 'https://github.com/rust-lang/rust/raw/master/COPYRIGHT',
+            'LICENSE_PATH': 'https://github.com/rust-lang/rust/raw/main/COPYRIGHT',
             'ATTRIBUTION': 'Copyright (c) The Rust Project Contributors',
          },
       )

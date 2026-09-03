@@ -42,6 +42,7 @@ def find_license_files(path: str) -> list[str]:
    A file is considered a license file if it contains (case-insensitive)
    any of the words "LICENSE", "LICENCE", or "COPYING", or if the filename
    is (case-insensitive) "COPYRIGHT", optionally with a file extension.
+   Directories matching those names are ignored.
 
    License files should only contain license information. Readme files and
    source code files are not license information and should not be returned.
@@ -58,7 +59,7 @@ def find_license_files(path: str) -> list[str]:
          result.append(fn)
       elif testfn.split('.')[0] == 'COPYRIGHT':
          result.append(fn)
-   return [fn for fn in result if os.path.exists(fn)]
+   return [fn for fn in result if os.path.isfile(fn)]
 
 
 def scan_repo_for_license(repo_url: str) -> str:
